@@ -1,6 +1,6 @@
 # Trabajo Práctico integrador
 
-En este TP se integran los conocimientos de base de datos (MySQL) y código JAVA para crear una aplicación cliente-servidor sencilla que simula la gestión de una escuela. Permite realizar el seguimiento de asistencias, notas y matrícula de estudiantes de escuela primaria en distintos turnos (Mañana, tarde o Jornada completa).
+En este TP se integran los conocimientos de base de datos (MySQL) y código JAVA para crear una aplicación cliente-servidor sencilla que simula la gestión de una escuela. Permite realizar el seguimiento de asistencias, notas y matrícula de estudiantes de escuela primaria en distintos turnos (Mañana, Tarde o Jornada completa).
 
 ## 💡 Tecnologías utilizadas
 - **Spring Boot**
@@ -16,4 +16,7 @@ Enlace a los archivos SQL: [src/main/resources/sql](https://github.com/Pablo-Gul
 
 
 ## 📔 Referencias
-Repositorio del Trabajo Integrador del módulo **Programación Orientada a Objetos (JAVA)** que forma parte del Trayecto Formativo "Programador" del Centro de Formación Profecional 8 - SMATA.
+Repositorio del Trabajo Integrador del módulo **Programación Orientada a Objetos (JAVA)** que forma parte del **Trayecto Formativo "Programador"** del Centro de Formación Profecional 8 - SMATA.
+
+## 👤 Autor
+Pablo Gularte - pablo.gularte@proton.me
