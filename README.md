@@ -6,6 +6,8 @@ En este TP se integran los conocimientos de base de datos (MySQL) y código JAVA
 - **Spring Boot**
 - **Maven**
 - **Lombok**
+- **Java**
+- **MySQL**
 
 
 ## ✏️ Recursos
