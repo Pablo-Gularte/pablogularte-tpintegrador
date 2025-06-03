@@ -45,11 +45,11 @@ SELECT e.apellido,
 FROM asistencias a,
      estudiantes e
 WHERE e.id_estudiante = a.id_estudiante
-  AND a.id_grado = 8
+  AND e.id_grado = 8
   AND a.fecha    = '2024-09-01'
 ORDER BY e.apellido;
 
--- #5 Listar agrupado de asistencia por grado, fecha y turno
+-- #5 Listar agrupado de asistencia por fecha y turno
 SELECT g.nombre_grado,
        a.tipo_asistencia,
        a.fecha,
@@ -57,7 +57,7 @@ SELECT g.nombre_grado,
 FROM asistencias a,
      estudiantes e,
      grados g
-WHERE g.id_grado = a.id_grado
+WHERE g.id_grado = e.id_grado
   AND e.id_estudiante = a.id_estudiante
   AND g.turno = 'Mañana'
   AND a.fecha = '2024-09-01'
@@ -71,11 +71,34 @@ SELECT n.bimestre,
        e.nombre,
        g.nombre_grado grado,
        g.turno,
-       n.nota
+       n.nota,
+       n.anio
 FROM notas n,
      estudiantes e,
      grados g
-WHERE g.id_grado      = n.id_grado
+WHERE g.id_grado      = e.id_grado
   AND e.id_estudiante = n.id_estudiante
   AND n.id_estudiante = 1
   AND n.anio          = 2024 ;
+  
+  -- #7 Listar detalle de notas por grado, bimestre y año
+  Select e.apellido,
+         e.nombre,
+         n.nota,
+         n.bimestre
+   From notas n,
+        estudiantes e
+ Where n.id_estudiante = e.id_estudiante
+   And n.bimestre = 'Primer bimestre'
+   And n.anio     = 2025
+   And e.id_grado = 2;
+   
+  -- #8 Listar detalle de asistencia por fecha y grado
+  Select a.tipo_asistencia,
+         e.apellido,
+         e.nombre
+   From asistencias a,
+        estudiantes e
+ Where e.id_estudiante = a.id_estudiante
+   and e.id_grado = 1
+   and a.fecha = '2024-09-01';

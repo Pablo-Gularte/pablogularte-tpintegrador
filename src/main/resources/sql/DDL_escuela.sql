@@ -73,7 +73,6 @@ DROP TABLE IF EXISTS asistencias;
 CREATE TABLE IF NOT EXISTS asistencias (
   id_asistencia INT NOT NULL AUTO_INCREMENT COMMENT 'Clave primaria de la tabla "ciclo_lectivo"',
   fecha DATE NULL COMMENT 'Indica la fecha de registro de asistencia.',
-  id_grado INT NULL COMMENT 'Clave foránea que vincula con la tabla "grados". Indica la correspondencia entre el grado y el ciclo lectivo.',
   id_estudiante INT NULL COMMENT 'Clave foránea que vincula con la tabla "estudiantes". Permite identificar al estudiante.',
   tipo_asistencia ENUM('Presente', 'Ausente', 'Llegada tarde') NOT NULL DEFAULT 'Presente' COMMENT 'Indica la situaciónm de asistencia del estudiante.',
   PRIMARY KEY (id_asistencia)
@@ -82,7 +81,6 @@ ENGINE = InnoDB;
 
 -- Crear índices de la tabla asistencias
 CREATE INDEX fk_asistencias_estudiantes_idx ON asistencias (id_estudiante);
-CREATE INDEX fk_asistencias_grados_idx ON asistencias (id_grado);
 CREATE INDEX idx_asistencia_fecha ON asistencias (fecha);
 
 
@@ -96,14 +94,12 @@ CREATE TABLE IF NOT EXISTS notas (
   anio INT NULL COMMENT 'Indica el año del ciclo lectivo.',
   bimestre ENUM('Primer bimestre', 'Segundo bimestre', 'Tercer bimestre', 'Cuarto bimestre') NOT NULL DEFAULT 'Primer bimestre' COMMENT 'Indica el bimestre correspondiente a la nota',
   id_estudiante INT NULL COMMENT 'Clave foránea que vincula con la tabla "estudiantes". Identifica a qué estudiante corresponde la nota en cuestión.',
-  id_grado INT NULL COMMENT 'Clave foránea que vincula con la tabla "grados". Identifica a qué grado pertenece el estudiante de la nota en cuestión.',
   nota float(2,1),
   PRIMARY KEY (id_nota)
   )
 ENGINE = InnoDB;
 
 CREATE INDEX fk_notas_estudiantes_idx ON notas (id_estudiante);
-CREATE INDEX fk_notas_grados_idx ON notas (id_grado);
 CREATE INDEX idx_notas_anio ON notas (anio);
 CREATE INDEX idx_notas_bimestre ON notas (bimestre);
 
@@ -126,13 +122,6 @@ ADD CONSTRAINT fk_asistencias_estudiantes
     REFERENCES estudiantes (id_estudiante)
     ON DELETE RESTRICT
     ON UPDATE CASCADE;
-	
-ALTER TABLE asistencias
-ADD CONSTRAINT fk_asistencias_grados
-    FOREIGN KEY (id_grado)
-    REFERENCES grados (id_grado)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE;
 
 -- FKs de tabla notas
 ALTER TABLE notas
@@ -141,10 +130,3 @@ ALTER TABLE notas
     REFERENCES estudiantes (id_estudiante)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION;
-
-ALTER TABLE notas
-ADD CONSTRAINT fk_notas_grados
-    FOREIGN KEY (id_grado)
-    REFERENCES grados (id_grado)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE;
