@@ -19,7 +19,16 @@ CREATE TABLE IF NOT EXISTS grados (
   docente VARCHAR(100) NULL COMMENT 'Indica el nombre de docente a cargo del grado',
   activo TINYINT NOT NULL DEFAULT 1 COMMENT 'Indica si el grado está activo y con estudiantes matriculados. Por defecto se asume que está activo.',
   PRIMARY KEY (id_grado))
-ENGINE = InnoDB;
+ENGINE = InnoDB;  -- Indico el manejador de almacenamiento (storage engine) que va a utilizar la base de datos para guardar los datos en la tabla.
+                  -- El manejador "InnoDB", además de ser el que sugiere MySQL Workbench, es el más utilizado y recomendado para MySQL, ya que 
+                  -- permite transacciones ACID, claves foráneas, bloqueo a nivel de fila y usa un área en memoria (buffer pool) para guardar 
+                  -- tanto datos como índices.
+                  -- Las transacciones ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad) son un conjunto de propiedades que garantizan 
+                  -- que las transacciones de la base de datos se procesen de manera confiable, segura y coherente.
+                  -- Atomicidad: todas sus operaciones se realizan  completamente o no se hace ninguna.
+                  -- Consistencia: la base de datos siempre queda en estado consistente después de una transacción.
+                  -- Aislamiento: las transacciones concurrentes no interfieren entre sí.
+                  -- Durabilidad: una vez que una transacción se ha confirmado, sus efectos son permanentes, incluso ante fallos del sistema.
 
 -- -- Crear índices de la tabla grados
 CREATE INDEX idx_grados_nombre ON grados (nombre_grado);
@@ -49,7 +58,7 @@ ENGINE = InnoDB;
 
 -- -- Crear índices de la tabla estudiantes
 CREATE INDEX fk_estudiantes_grados_idx ON estudiantes (id_grado);
-CREATE INDEX idx_estudiante_nombre ON estudiantes (apellido);
+CREATE INDEX idx_estudiante_nombre ON estudiantes (nombre);
 CREATE INDEX idx_estudiante_apellido ON estudiantes (apellido);
 CREATE INDEX idx_estudiante_madre ON estudiantes (nombre_madre);
 CREATE INDEX idx_estudiante_padre ON estudiantes (nombre_padre);

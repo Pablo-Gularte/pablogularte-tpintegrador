@@ -1,5 +1,7 @@
+-- #1 Selecciono la base de datos de trabajo
 USE escuela;
 
+-- #2 Agrego los datos de los grados
 INSERT INTO grados (id_grado, nombre_grado, ciclo, turno, docente) VALUES
   (1, 'Primero', 'Primer ciclo', 'Jornada completa', 'Martín Gómez'),
   (2, 'Segundo', 'Primer ciclo', 'Jornada completa', 'Lucas Pérez'),
@@ -16,6 +18,7 @@ INSERT INTO grados (id_grado, nombre_grado, ciclo, turno, docente) VALUES
   (13, 'Sexto', 'Segundo ciclo', 'Mañana', 'Mariana Vega'),
   (14, 'Séptimo', 'Segundo ciclo', 'Mañana', 'Camila Navarro');
 
+-- #3 Agrego los datos de los estudiantes
 INSERT INTO estudiantes (id_estudiante, id_grado, nombre, apellido, edad, direccion, nombre_madre, nombre_padre, hermano_en_escuela) VALUES
   (1, 1, 'Mateo', 'López', 6, 'Calle Falsa 123', 'Madre López', 'Padre López', 0),
   (2, 1, 'Santiago', 'Rodríguez', 6, 'Calle Falsa 123', 'Madre Rodríguez', 'Padre Rodríguez', 0),
@@ -271,7 +274,7 @@ INSERT INTO estudiantes (id_estudiante, id_grado, nombre, apellido, edad, direcc
   (252, 14, 'Natalia', 'Rodríguez', 12, 'Calle Falsa 123', 'Madre Rodríguez', 'Padre Rodríguez', 0),
   (253, 14, 'Marta', 'Fernández', 12, 'Calle Falsa 123', 'Madre Fernández', 'Padre Fernández', 0);
 
-
+-- #4 Agrego fechas de asistencias de estudiantes
 INSERT INTO asistencias (fecha, id_grado, id_estudiante, tipo_asistencia) VALUES
   ('2024-09-01', 1, 1, 'Presente'),
   ('2024-09-01', 1, 2, 'Presente'),
@@ -527,6 +530,7 @@ INSERT INTO asistencias (fecha, id_grado, id_estudiante, tipo_asistencia) VALUES
   ('2024-09-01', 14, 252, 'Presente'),
   ('2024-09-01', 14, 253, 'Presente');
 
+-- #5 Agrego notas de estudiantes
 INSERT INTO notas (anio, bimestre, id_estudiante, id_grado, nota) VALUES
   (2024, 'Primer bimestre', 1, 1, 6.8),
   (2024, 'Primer bimestre', 2, 1, 7.6),
