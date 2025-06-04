@@ -16,7 +16,7 @@ Enlace a los archivos SQL: [src/main/resources/sql](https://github.com/Pablo-Gul
 
 
 ## 📔 Referencias
-Repositorio del Trabajo Integrador del módulo **Programación Orientada a Objetos (JAVA)** que forma parte del **Trayecto Formativo "Programador"** del Centro de Formación Profecional 8 - SMATA.
+Repositorio del Trabajo Integrador del módulo **Programación Orientada a Objetos (JAVA)** que forma parte del **Trayecto Formativo "Programador"** del Centro de Formación Profesional 8 - SMATA.
 
 ## 👤 Autor
 Pablo Gularte - pablo.gularte@proton.me
