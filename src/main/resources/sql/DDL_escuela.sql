@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS grados (
   ciclo ENUM('Primer ciclo', 'Segundo ciclo') NOT NULL DEFAULT 'Primer ciclo',
   turno ENUM('Mañana', 'Tarde', 'Jornada completa') NULL,
   docente VARCHAR(100) NULL,
-  activo TINYINT NOT NULL DEFAULT 1,
+  activo BOOLEAN NULL,
   PRIMARY KEY (id_grado))
 ;
 
@@ -34,10 +34,10 @@ CREATE TABLE IF NOT EXISTS estudiantes (
   direccion VARCHAR(200) NOT NULL,
   nombre_madre VARCHAR(100) NULL,
   nombre_padre VARCHAR(100) NULL,
-  hermano_en_escuela TINYINT NULL,
-  activo TINYINT NOT NULL DEFAULT 1,
+  hermano_en_escuela BOOLEAN NULL,
+  activo BOOLEAN NULL,
   PRIMARY KEY (id_estudiante),
-  INDEX fk_estudiantes_grados_idx (id_grado ASC) INVISIBLE,
+  INDEX fk_estudiantes_grados_idx (id_grado ASC),
   CONSTRAINT fk_estudiantes_grados
     FOREIGN KEY (id_grado)
     REFERENCES grados (id_grado));
