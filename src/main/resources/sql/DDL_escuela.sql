@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS grados (
   ciclo ENUM('Primer ciclo', 'Segundo ciclo') NOT NULL DEFAULT 'Primer ciclo',
   turno ENUM('Mañana', 'Tarde', 'Jornada completa') NULL,
   docente VARCHAR(100) NULL,
-  activo BOOLEAN NULL,
+  activo BOOLEAN NOT NULL DEFAULT 1,
   PRIMARY KEY (id_grado))
 ;
 
@@ -34,13 +34,14 @@ CREATE TABLE IF NOT EXISTS estudiantes (
   direccion VARCHAR(200) NOT NULL,
   nombre_madre VARCHAR(100) NULL,
   nombre_padre VARCHAR(100) NULL,
-  hermano_en_escuela BOOLEAN NULL,
-  activo BOOLEAN NULL,
-  PRIMARY KEY (id_estudiante),
-  INDEX fk_estudiantes_grados_idx (id_grado ASC),
-  CONSTRAINT fk_estudiantes_grados
+  hermano_en_escuela BOOLEAN NOT NULL DEFAULT 0,
+  activo BOOLEAN NOT NULL DEFAULT 1,
+  PRIMARY KEY (id_estudiante));
+  
+ALTER TABLE estudiantes
+ADD CONSTRAINT fk_estudiantes_grados
     FOREIGN KEY (id_grado)
-    REFERENCES grados (id_grado));
+    REFERENCES grados (id_grado);
 
 
 -- -----------------------------------------------------
@@ -53,11 +54,12 @@ CREATE TABLE IF NOT EXISTS asistencias (
   fecha DATE NULL,
   id_estudiante INT NULL,
   tipo_asistencia ENUM('Presente', 'Ausente', 'Llegada tarde') NOT NULL DEFAULT 'Presente',
-  PRIMARY KEY (id_asistencia),
-  INDEX fk_asistencias_estudiantes_idx (id_estudiante ASC),
-  CONSTRAINT fk_asistencias_estudiantes
+  PRIMARY KEY (id_asistencia));
+
+ALTER TABLE asistencias
+ADD CONSTRAINT fk_asistencias_estudiantes
     FOREIGN KEY (id_estudiante)
-    REFERENCES estudiantes (id_estudiante));
+    REFERENCES estudiantes (id_estudiante);
 
 
 -- -----------------------------------------------------
@@ -67,7 +69,7 @@ DROP TABLE IF EXISTS asignaturas ;
 
 CREATE TABLE IF NOT EXISTS asignaturas (
   id_asignatura INT NOT NULL AUTO_INCREMENT,
-  nombre_asgignatura VARCHAR(45) NULL,
+  nombre_asignatura VARCHAR(45) NULL,
   docente VARCHAR(45) NULL,
   PRIMARY KEY (id_asignatura));
 
@@ -84,14 +86,13 @@ CREATE TABLE IF NOT EXISTS notas (
   bimestre ENUM('Primer bimestre', 'Segundo bimestre', 'Tercer bimestre', 'Cuarto bimestre') NOT NULL DEFAULT 'Primer bimestre',
   id_estudiante INT NULL,
   id_asignatura INT NULL,
-  PRIMARY KEY (id_nota),
-  INDEX fk_notas_estudiantes_idx (id_estudiante ASC),
-  INDEX fk_notas_asignaturas_idx (id_asignatura ASC),
-  CONSTRAINT fk_notas_estudiantes
+  PRIMARY KEY (id_nota));
+
+ALTER TABLE notas
+ADD CONSTRAINT fk_notas_estudiantes
     FOREIGN KEY (id_estudiante)
     REFERENCES estudiantes (id_estudiante),
-  CONSTRAINT fk_notas_asignaturas
+ADD CONSTRAINT fk_notas_asignaturas
     FOREIGN KEY (id_asignatura)
     REFERENCES asignaturas (id_asignatura)
-    )
 ;
