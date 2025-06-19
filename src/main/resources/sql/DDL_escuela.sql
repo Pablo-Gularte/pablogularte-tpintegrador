@@ -1,7 +1,8 @@
 -- ----------------------------
 -- Crear base de datos escuela
 -- ----------------------------
-CREATE DATABASE IF NOT EXISTS escuela;
+DROP DATABASE IF EXISTS escuela;
+CREATE DATABASE escuela;
 USE escuela ;
 
 -- -----------------------------------------------------
