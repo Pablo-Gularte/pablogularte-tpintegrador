@@ -19,11 +19,11 @@ public class EstudianteDAO implements I_EstudianteRepository {
 
     // Constantes que definen las consultas SQL que utilizan os métodos para interactuar con la BD
     private static final String SQL_CREATE = "INSERT INTO estudiantes (nombre, apellido, edad, id_grado, direccion, nombre_madre, nombre_padre, hermano_en_escuela, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM estudiantes WHERE id = ?";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM estudiantes WHERE id_estudiante = ?";
     private static final String SQL_FIND_ALL = "SELECT * FROM estudiantes";
-    private static final String SQL_UPDATE = "UPDATE estudiantes SET nombre = ?, apellido = ?, edad = ?, id_grado = ?, direccion = ?, nombre_madre = ?, nombre_padre = ?, hermano_en_escuela = ?, activo = ? WHERE id = ?";
-    private static final String SQL_DELETE = "DELETE FROM estudiantes WHERE id = ?";
-    private static final String SQL_FIND_BY_GRADO = "SELECT * FROM estudiantes WHERE id = ?";
+    private static final String SQL_UPDATE = "UPDATE estudiantes SET nombre = ?, apellido = ?, edad = ?, id_grado = ?, direccion = ?, nombre_madre = ?, nombre_padre = ?, hermano_en_escuela = ?, activo = ? WHERE id_estudiante = ?";
+    private static final String SQL_DELETE = "DELETE FROM estudiantes WHERE id_estudiante = ?";
+    private static final String SQL_FIND_BY_GRADO = "SELECT * FROM estudiantes WHERE id_grado = ?";
 
     public EstudianteDAO(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -31,7 +31,8 @@ public class EstudianteDAO implements I_EstudianteRepository {
 
     @Override
     public void create(Estudiante estudiante) throws SQLException {
-        try (Connection conn = dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, estudiante.getNombre());
             ps.setString(2, estudiante.getApellido());
             ps.setInt(3, estudiante.getEdad());
@@ -83,20 +84,48 @@ public class EstudianteDAO implements I_EstudianteRepository {
 
     @Override
     public int update(Estudiante estudiante) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
+            ps.setString(1, estudiante.getNombre());
+            ps.setString(2, estudiante.getApellido());
+            ps.setInt(3, estudiante.getEdad());
+            ps.setInt(4, estudiante.getIdGrado());
+            ps.setString(5, estudiante.getDireccion());
+            ps.setString(6, estudiante.getNombreMadre());
+            ps.setString(7, estudiante.getNombrePadre());
+            ps.setBoolean(8, estudiante.isHermanoEnEscuela());
+            ps.setBoolean(9, estudiante.isActivo());
+            ps.setInt(10, estudiante.getIdEstudiante());
+            
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas; // Retorna el número de filas afectadas por la actualización
+            
+        }
     }
 
     @Override
     public int delete(int id) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_DELETE)) {
+            ps.setInt(1, id);
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas; // Retorna el número de filas afectadas por la eliminación
+        }
     }
 
     @Override
     public List<Estudiante> findByGrado(int idGrado) throws SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByGrado'");
+        List<Estudiante> estudiantes = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(SQL_FIND_BY_GRADO)) {
+            ps.setInt(1, idGrado);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    estudiantes.add(mapRow(rs));
+                }
+            }
+        }
+        return estudiantes;
     }
 
     private Estudiante mapRow(ResultSet rs) throws SQLException {
