@@ -109,9 +109,51 @@ public class GradoDAO implements I_GradoRepository{
         // Vuelco uno a uno los datos del ResulSet en variables individuales para poder realizar las conversiones necesarias
         // de los ENUMs y luego crear un objeto Grado con esos datos.
         int idGrado = rs.getInt("id_grado");
-        NombreGrado nombreGrado = NombreGrado.valueOf(rs.getString("nombre_grado"));    // Convierto la cadena del ResulSet a ENUM "NombreGrado"
-        Ciclo ciclo = Ciclo.valueOf(rs.getString("ciclo"));                             // Convierto la cadena del ResulSet a ENUM "Ciclo"
-        Turno turno = Turno.valueOf(rs.getString("turno"));                             // Convierto la cadena del ResulSet a ENUM "Turno"  
+        NombreGrado nombreGrado;
+        switch(rs.getString("nombre_grado")) {
+            case "Primero":
+                nombreGrado = NombreGrado.PRIMERO;
+                break;
+            case "Segundo":
+                nombreGrado = NombreGrado.SEGUNDO;
+                break;
+            case "Tercero":
+                nombreGrado = NombreGrado.TERCERO;
+                break;
+            case "Cuarto":
+                nombreGrado = NombreGrado.CUARTO;
+                break;
+            case "Quinto":
+                nombreGrado = NombreGrado.QUINTO;
+                break;
+            case "Sexto":
+                nombreGrado = NombreGrado.SEXTO;
+                break;
+            default:
+                nombreGrado = NombreGrado.SEPTIMO;
+                break;
+        }
+        Ciclo ciclo;
+        switch (rs.getString("ciclo")) {
+            case "Primer ciclo":
+                ciclo = Ciclo.PRIMERO; 
+                break;
+            default:
+                ciclo = Ciclo.SEGUNDO;
+                break;
+        }
+        Turno turno;
+        switch(rs.getString("turno")) {
+            case "Mañana":
+                turno = Turno.MAÑANA;
+                break;
+            case "Tarde":
+                turno = Turno.TARDE;
+                break;
+            default:
+                turno = Turno.JORNADA_COMPLETA;
+                break;
+        }
         String docente = rs.getString("docente");
         boolean activo = rs.getBoolean("activo");
         
