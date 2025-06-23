@@ -12,9 +12,9 @@ DROP TABLE IF EXISTS grados ;
 
 CREATE TABLE IF NOT EXISTS grados (
   id_grado INT AUTO_INCREMENT,
-  nombre_grado ENUM('Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto', 'Séptimo') NOT NULL DEFAULT 'Primero',
-  ciclo ENUM('Primer ciclo', 'Segundo ciclo') NOT NULL DEFAULT 'Primer ciclo',
-  turno ENUM('Mañana', 'Tarde', 'Jornada completa') NOT NULL,
+  nombre_grado ENUM('Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto', 'Séptimo'),
+  ciclo ENUM('Primer ciclo', 'Segundo ciclo'),
+  turno ENUM('Mañana', 'Tarde', 'Jornada completa'),
   docente VARCHAR(100),
   activo BOOLEAN NOT NULL DEFAULT 1,
   PRIMARY KEY (id_grado))
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS asistencias (
   id_asistencia INT AUTO_INCREMENT,
   fecha DATE NOT NULL,
   id_estudiante INT NOT NULL,
-  tipo_asistencia ENUM('Presente', 'Ausente', 'Llegada tarde') NOT NULL DEFAULT 'Presente',
+  tipo_asistencia ENUM('Presente', 'Ausente', 'Llegada tarde'),
   PRIMARY KEY (id_asistencia));
 
 ALTER TABLE asistencias
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS notas (
   id_nota INT AUTO_INCREMENT,
   nota INT NOT NULL,
   anio INT NOT NULL,
-  bimestre ENUM('Primer bimestre', 'Segundo bimestre', 'Tercer bimestre', 'Cuarto bimestre') NOT NULL DEFAULT 'Primer bimestre',
+  bimestre ENUM('Primer bimestre', 'Segundo bimestre', 'Tercer bimestre', 'Cuarto bimestre'),
   id_estudiante INT NOT NULL,
   id_asignatura INT NOT NULL,
   PRIMARY KEY (id_nota));

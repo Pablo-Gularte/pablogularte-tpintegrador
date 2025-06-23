@@ -33,9 +33,9 @@ public class GradoDAO implements I_GradoRepository{
     public void create(Grado grado) throws SQLException {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_CREATE, java.sql.Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, grado.getNombreGrado().toString()); // Convierto el ENUM "NombreGrado" a cadena para guardarlo en la BD
-            ps.setString(2, grado.getCiclo().toString());       // Convierto el ENUM "Ciclo" a cadena para guardarlo en la BD
-            ps.setString(3, grado.getTurno().toString());       // Convierto el ENUM "Turno" a cadena para guardarlo en la BD
+            ps.setString(1, convertirValorEnumParaBD(grado.getNombreGrado())); // Convierto el ENUM "NombreGrado" a cadena para guardarlo en la BD
+            ps.setString(2, convertirValorEnumParaBD(grado.getCiclo()));       // Convierto el ENUM "Ciclo" a cadena para guardarlo en la BD
+            ps.setString(3, convertirValorEnumParaBD(grado.getTurno()));       // Convierto el ENUM "Turno" a cadena para guardarlo en la BD
             ps.setString(4, grado.getDocente());
             ps.setBoolean(5, grado.isActivo());
 
@@ -83,12 +83,12 @@ public class GradoDAO implements I_GradoRepository{
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
             
-            ps.setString(1, grado.getNombreGrado().toString()); // Convierto el ENUM "NombreGrado" a cadena para guardarlo en la BD
-            ps.setString(2, grado.getCiclo().toString());       // Convierto el ENUM "Ciclo" a cadena para guardarlo en la BD
-            ps.setString(3, grado.getTurno().toString());       // Convierto el ENUM "Turno" a cadena para guardarlo en la BD
+            ps.setString(1, convertirValorEnumParaBD(grado.getNombreGrado())); // Convierto el ENUM "NombreGrado" a cadena para guardarlo en la BD
+            ps.setString(2, convertirValorEnumParaBD(grado.getCiclo()));       // Convierto el ENUM "Ciclo" a cadena para guardarlo en la BD
+            ps.setString(3, convertirValorEnumParaBD(grado.getTurno()));       // Convierto el ENUM "Turno" a cadena para guardarlo en la BD
             ps.setString(4, grado.getDocente());
             ps.setBoolean(5, grado.isActivo());
-            ps.setInt(6, grado.getIdGrado()); // Establezco el ID del grado a actualizar
+            ps.setInt(6, grado.getIdGrado());
 
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas;
@@ -159,5 +159,35 @@ public class GradoDAO implements I_GradoRepository{
         
         Grado grado = new Grado(idGrado, nombreGrado, ciclo, turno, docente, activo);
         return grado;
+    }
+
+    private String convertirValorEnumParaBD(NombreGrado nombreGrado) {
+        return switch (nombreGrado) {
+            case PRIMERO -> "Primero";
+            case SEGUNDO -> "Segundo";
+            case TERCERO -> "Tercero";
+            case CUARTO -> "Cuarto";
+            case QUINTO -> "Quinto";
+            case SEXTO -> "Sexto";
+            case SEPTIMO -> "Séptimo";
+            default -> null;
+        };
+    }
+
+    private String convertirValorEnumParaBD(Ciclo ciclo) {
+        return switch (ciclo) {
+            case PRIMERO -> "Primer ciclo";
+            case SEGUNDO -> "Segundo ciclo";
+            default -> null;
+        };
+    }
+
+    private String convertirValorEnumParaBD(Turno turno) {
+        return switch (turno) {
+            case MAÑANA -> "Mañana";
+            case TARDE -> "Tarde";
+            case JORNADA_COMPLETA -> "Jornada completa";
+            default -> null;
+        };
     }
 }

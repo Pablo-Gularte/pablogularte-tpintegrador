@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.tests.clasesdao;
+package ar.org.curso.centro8.java.tests;
 
 import java.io.InputStream;
 import java.util.Properties;

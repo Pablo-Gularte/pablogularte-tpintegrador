@@ -5,8 +5,9 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import ar.org.curso.centro8.java.entities.Grado;
 import ar.org.curso.centro8.java.repositories.GradoDAO;
+import ar.org.curso.centro8.java.tests.ConfiguracionBD;
 
-public class TestGrado {
+public class TestGradoDAO {
     public static void main(String[] args) {
         HikariConfig config = ConfiguracionBD.getConfiguracion();
         try (HikariDataSource ds = new HikariDataSource(config)) {

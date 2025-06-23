@@ -31,9 +31,9 @@ public class AsistenciaDAO implements I_AsistenciaRepository {
     public void create(Asistencia asistencia) throws SQLException {
         try (var conn = dataSource.getConnection();
              var ps = conn.prepareStatement(SQL_CREATE, java.sql.Statement.RETURN_GENERATED_KEYS)) {
-            ps.setDate(1, java.sql.Date.valueOf(asistencia.getFecha().toString()));
+            ps.setDate(1, java.sql.Date.valueOf(asistencia.getFecha().toString())); // Convierto el formato de fecha Date de Java al formato de fecha SQL
             ps.setInt(2, asistencia.getIdEstudiante());
-            ps.setString(3, asistencia.getTipoAsistencia().toString());
+            ps.setString(3, convertirValorEnumParaBD(asistencia.getTipoAsistencia())); // Convierto el ENUM "TipoAsistencia" a su cadena correspondiente para guardarlo en la BD
 
             ps.executeUpdate();
 
@@ -78,7 +78,7 @@ public class AsistenciaDAO implements I_AsistenciaRepository {
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
             ps.setDate(1, java.sql.Date.valueOf(asistencia.getFecha().toString())); // Convierto el formato de fecha Date de Java al formato de fecha SQL
             ps.setInt(2, asistencia.getIdEstudiante());
-            ps.setString(3, asistencia.getTipoAsistencia().toString());
+            ps.setString(3, convertirValorEnumParaBD(asistencia.getTipoAsistencia())); // Convierto el ENUM "TipoAsistencia" a su cadena correspondiente para guardarlo en la BD
             ps.setInt(4, asistencia.getIdAsistencia());
 
             int filasAfectadas = ps.executeUpdate();
@@ -98,12 +98,38 @@ public class AsistenciaDAO implements I_AsistenciaRepository {
     }
 
     private Asistencia mapRow(ResultSet rs) throws SQLException {
+        TipoAsistencia tipoAsistencia;
+
+        switch (rs.getString("tipo_asistencia")) {
+            case "Presente":
+                tipoAsistencia = TipoAsistencia.PRESENTE;
+                break;
+            case "Ausente":
+                tipoAsistencia = TipoAsistencia.AUSENTE;
+                break;
+            case "Llegada tarde":
+                tipoAsistencia = TipoAsistencia.LLEGADA_TARDE;
+                break;
+            default:
+                tipoAsistencia = null;
+                break;
+        }
+        
         Asistencia asistencia = new Asistencia(
             rs.getInt("id_asistencia"),
             rs.getDate("fecha"),
             rs.getInt("id_estudiante"),
-            TipoAsistencia.valueOf(rs.getString("tipo_asistencia"))
+            tipoAsistencia
         );
         return asistencia;
+    }
+
+    private String convertirValorEnumParaBD(TipoAsistencia tipoAsistencia) {
+        return switch (tipoAsistencia) {
+            case PRESENTE -> "Presente";
+            case AUSENTE -> "Ausente";
+            case LLEGADA_TARDE -> "Llegada tarde";
+            default -> null;
+        };
     }
 }
