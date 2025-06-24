@@ -10,11 +10,14 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.stereotype.Repository;
+
 import ar.org.curso.centro8.java.entities.Nota;
 import ar.org.curso.centro8.java.enums.Bimestre;
 import ar.org.curso.centro8.java.repositories.interfaces.I_NotaRepository;
 
-public class NotaDAO implements I_NotaRepository {
+@Repository
+public class NotaRepository implements I_NotaRepository {
     private final DataSource dataSource;
 
     // Constantes que definen las consultas SQL que utilizan los métodos para
@@ -26,7 +29,7 @@ public class NotaDAO implements I_NotaRepository {
     private static final String SQL_DELETE = "DELETE FROM notas WHERE id_nota = ?";
     private static final String SQL_FIND_BY_ESTUDIANTE = "SELECT * FROM notas WHERE id_estudiante = ?";
 
-    public NotaDAO(DataSource dataSource) {
+    public NotaRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -118,24 +121,64 @@ public class NotaDAO implements I_NotaRepository {
         return notas;
     }
 
+    /**
+     * Convierte un ResultSet en un objeto Nota.
+     * 
+     * @param rs El ResultSet que contiene los datos de la nota.
+     *           Este ResultSet debe contener las columnas: id_nota, nota, anio,
+     *           bimestre, id_estudiante, id_asignatura.
+     * @return Un objeto Nota que representa la fila actual del ResultSet. Si el
+     *         ResultSet no contiene los datos esperados, puede lanzar una SQLException.
+     * @throws SQLException Si ocurre un error al acceder a los datos del ResultSet.
+     */
     private Nota mapRow(ResultSet rs) throws SQLException {
         Nota nota = new Nota(
                 rs.getInt("id_nota"),
                 rs.getInt("nota"),
                 rs.getInt("anio"),
-                Bimestre.valueOf(rs.getString("bimestre")), // Convierto la cadena del Bimestre a su ENUM
+                convertirEnumBimestreDesdeBD(rs.getString("bimestre")), // Convierto la cadena del Bimestre a su ENUM
                                                             // correspondiente
                 rs.getInt("id_estudiante"),
                 rs.getInt("id_asignatura"));
         return nota;
     }
 
+    /**
+     * Convierte el valor del ENUM Bimestre a su representación en cadena
+     * para almacenarlo en la base de datos.
+     * 
+     * @param bimestre Este es el valor del ENUM Bimestre que se va a convertir
+     *                 a su representación en cadena.
+     * @return El valor del ENUM Bimestre convertido a su representación en cadena
+     *         para ser almacenado en la base de datos. Si el valor no es reconocido,
+     *         retorna null.
+     */
     private String convertirValorEnumParaBD(Bimestre bimestre) {
         return switch(bimestre) {
             case PRIMERO -> "Primer bimestre";
             case SEGUNDO -> "Segundo bimestre";
             case TERCERO -> "Tercer bimestre";
             case CUARTO -> "Cuarto bimestre";
+            default -> null;
+        };
+    }
+
+    /**
+     * Convierte el valor del ENUM Bimestre a su representación en cadena
+     * para almacenarlo en la base de datos.
+     * 
+     * @param valorEnum Este es el valor del ENUM Bimestre que se va a convertir
+     *                  a su representación en cadena.
+     * @return El valor del ENUM Bimestre convertido a su representación en cadena
+     *         para ser almacenado en la base de datos. Si el valor no es reconocido,
+     *         retorna null.
+     */
+    private Bimestre convertirEnumBimestreDesdeBD(String valorEnum) {
+        return switch(valorEnum) {
+            case "Primer bimestre" -> Bimestre.PRIMERO;
+            case "Segundo bimestre" -> Bimestre.SEGUNDO;
+            case "Tercer bimestre" -> Bimestre.TERCERO;
+            case "Cuarto bimestre" -> Bimestre.CUARTO;
             default -> null;
         };
     }

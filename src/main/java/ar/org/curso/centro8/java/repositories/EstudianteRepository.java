@@ -10,10 +10,13 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.stereotype.Repository;
+
 import ar.org.curso.centro8.java.entities.Estudiante;
 import ar.org.curso.centro8.java.repositories.interfaces.I_EstudianteRepository;
 
-public class EstudianteDAO implements I_EstudianteRepository {
+@Repository
+public class EstudianteRepository implements I_EstudianteRepository {
 
     private final DataSource dataSource;
 
@@ -25,7 +28,7 @@ public class EstudianteDAO implements I_EstudianteRepository {
     private static final String SQL_DELETE = "DELETE FROM estudiantes WHERE id_estudiante = ?";
     private static final String SQL_FIND_BY_GRADO = "SELECT * FROM estudiantes WHERE id_grado = ?";
 
-    public EstudianteDAO(DataSource dataSource) {
+    public EstudianteRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

@@ -9,11 +9,14 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.stereotype.Repository;
+
 import ar.org.curso.centro8.java.entities.Asistencia;
 import ar.org.curso.centro8.java.enums.TipoAsistencia;
 import ar.org.curso.centro8.java.repositories.interfaces.I_AsistenciaRepository;
 
-public class AsistenciaDAO implements I_AsistenciaRepository {
+@Repository
+public class AsistenciaRepository implements I_AsistenciaRepository {
     private final DataSource dataSource;
     
     // Constantes que definen las consultas SQL que utilizan los métodos para interactuar con la BD
@@ -23,7 +26,7 @@ public class AsistenciaDAO implements I_AsistenciaRepository {
     private static final String SQL_UPDATE = "UPDATE asistencias SET fecha=?, id_estudiante=?, tipo_asistencia=? WHERE id_asistencia = ?";
     private static final String SQL_DELETE = "DELETE FROM asistencias WHERE id_asistencia = ?";
 
-    public AsistenciaDAO(DataSource dataSource) {
+    public AsistenciaRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -97,23 +100,21 @@ public class AsistenciaDAO implements I_AsistenciaRepository {
         }
     }
 
+    /**
+     * Convierte una fila del ResultSet a un objeto Asistencia.
+     * Esta función es utilizada para mapear los resultados de una consulta SQL
+     * a un objeto Asistencia.
+     * 
+     * @param rs El ResultSet que contiene los datos de la asistencia.
+     *           Se espera que contenga las columnas: id_asistencia, fecha, id_estudiante, tipo_asistencia.
+     * 
+     * @return Un objeto Asistencia que representa la fila del ResultSet.
+     *         Si el ResultSet no contiene los datos esperados, puede lanzar una SQLException.
+     * @throws SQLException Si ocurre un error al acceder a los datos del ResultSet.
+     */
     private Asistencia mapRow(ResultSet rs) throws SQLException {
-        TipoAsistencia tipoAsistencia;
-
-        switch (rs.getString("tipo_asistencia")) {
-            case "Presente":
-                tipoAsistencia = TipoAsistencia.PRESENTE;
-                break;
-            case "Ausente":
-                tipoAsistencia = TipoAsistencia.AUSENTE;
-                break;
-            case "Llegada tarde":
-                tipoAsistencia = TipoAsistencia.LLEGADA_TARDE;
-                break;
-            default:
-                tipoAsistencia = null;
-                break;
-        }
+        // Convierto el String de la BD al ENUM TipoAsistencia correspondiente
+        TipoAsistencia tipoAsistencia = convertirEnumTipoAsistenciaDesdeBD(rs.getString("tipo_asistencia"));
         
         Asistencia asistencia = new Asistencia(
             rs.getInt("id_asistencia"),
@@ -124,12 +125,39 @@ public class AsistenciaDAO implements I_AsistenciaRepository {
         return asistencia;
     }
 
+    /**
+     * Convierte el valor del ENUM TipoAsistencia a su representación de cadena en la base de datos.
+     * 
+     * @param tipoAsistencia Es el valor del ENUM TipoAsistencia que se desea convertir.
+     *                       Puede ser PRESENTE, AUSENTE o LLEGADA_TARDE.
+     * @return Una cadena que representa el valor del ENUM TipoAsistencia en la base de datos.
+     *         Retorna null si el valor del ENUM no es reconocido.
+     */
     private String convertirValorEnumParaBD(TipoAsistencia tipoAsistencia) {
         return switch (tipoAsistencia) {
             case PRESENTE -> "Presente";
             case AUSENTE -> "Ausente";
             case LLEGADA_TARDE -> "Llegada tarde";
             default -> null;
+        };
+    }
+
+    /**
+     * Convierte el valor recuperado de la BD que representa el ENUM TipoAsistencia
+     * y lo convierte al ENUM correspondiente.
+     * 
+     * @param valorEnum Es la cadena que representa el valor del ENUM TipoAsistencia
+     *                  en la base de datos. Puede ser "Presente", "Ausente",
+     *                  o "Llegada tarde".
+     * @return El valor del ENUM TipoAsistencia correspondiente a la cadena
+     *         proporcionada. Retorna null si la cadena no es reconocida.
+     */
+    private TipoAsistencia convertirEnumTipoAsistenciaDesdeBD(String valorEnum) {
+        return switch (valorEnum) {
+            case "Presente" -> TipoAsistencia.PRESENTE;
+            case "Ausente" -> TipoAsistencia.AUSENTE;
+            case "Llegada tarde" -> TipoAsistencia.LLEGADA_TARDE;
+            default -> null; // Manejo de caso no esperado
         };
     }
 }

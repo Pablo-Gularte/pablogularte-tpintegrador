@@ -1,22 +1,22 @@
-package ar.org.curso.centro8.java.tests.clasesdao;
+package ar.org.curso.centro8.java.tests.clasesrepository;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import ar.org.curso.centro8.java.entities.Estudiante;
-import ar.org.curso.centro8.java.repositories.EstudianteDAO;
+import ar.org.curso.centro8.java.repositories.EstudianteRepository;
 import ar.org.curso.centro8.java.tests.ConfiguracionBD;
 
-public class TestEstudianteDAO {
+public class TestEstudianteRepository {
     public static void main(String[] args) {
         HikariConfig config = ConfiguracionBD.getConfiguracion();
         try (HikariDataSource ds = new HikariDataSource(config)) {
-            EstudianteDAO estudianteDAO = new EstudianteDAO(ds);
+            EstudianteRepository estudianteRepository = new EstudianteRepository(ds);
             int idEstudiante = 1;
             int idGrado = 11;
 
             System.out.println("Prueba de impresión de un estudiante por ID: " + idEstudiante);
-            Estudiante est = estudianteDAO.findById(idEstudiante);
+            Estudiante est = estudianteRepository.findById(idEstudiante);
             if (est != null) {
                 System.out.println(est.getNombre() + " " + est.getApellido() + " tiene " + est.getEdad() + " años");
             } else {
@@ -24,7 +24,7 @@ public class TestEstudianteDAO {
             }
 
             System.out.println("\nPrueba de impresión de todos los estudiantes del grado con id " + idGrado);
-            estudianteDAO.findByGrado(idGrado).forEach(e -> {
+            estudianteRepository.findByGrado(idGrado).forEach(e -> {
                 System.out.println(e.getNombre() + " " + e.getApellido() + " tiene " + e.getEdad() + " años");
             });
         } catch (Exception e) {

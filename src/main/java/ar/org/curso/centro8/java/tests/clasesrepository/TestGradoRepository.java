@@ -1,20 +1,20 @@
-package ar.org.curso.centro8.java.tests.clasesdao;
+package ar.org.curso.centro8.java.tests.clasesrepository;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import ar.org.curso.centro8.java.entities.Grado;
-import ar.org.curso.centro8.java.repositories.GradoDAO;
+import ar.org.curso.centro8.java.repositories.GradoRepository;
 import ar.org.curso.centro8.java.tests.ConfiguracionBD;
 
-public class TestGradoDAO {
+public class TestGradoRepository {
     public static void main(String[] args) {
         HikariConfig config = ConfiguracionBD.getConfiguracion();
         try (HikariDataSource ds = new HikariDataSource(config)) {
-            GradoDAO gradoDAO = new GradoDAO(ds);
+            GradoRepository gradoRepository = new GradoRepository(ds);
             int idGrado = 11;
             System.out.println("Prueba de impresión de un grado por ID: " + idGrado);
-            Grado grado = gradoDAO.findById(idGrado);
+            Grado grado = gradoRepository.findById(idGrado);
             if(grado != null) {
                 System.out.println(grado);
             } else {

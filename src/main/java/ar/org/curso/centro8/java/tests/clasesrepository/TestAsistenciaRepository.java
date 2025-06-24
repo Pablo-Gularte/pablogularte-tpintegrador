@@ -1,19 +1,19 @@
-package ar.org.curso.centro8.java.tests.clasesdao;
+package ar.org.curso.centro8.java.tests.clasesrepository;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import ar.org.curso.centro8.java.entities.Asistencia;
-import ar.org.curso.centro8.java.repositories.AsistenciaDAO;
+import ar.org.curso.centro8.java.repositories.AsistenciaRepository;
 import ar.org.curso.centro8.java.tests.ConfiguracionBD;
 
-public class TestAsistenciaDAO {
+public class TestAsistenciaRepository {
     public static void main(String[] args) {
         HikariConfig config = ConfiguracionBD.getConfiguracion();
         try (HikariDataSource ds = new HikariDataSource(config)) {
-            AsistenciaDAO asistenciaDAO = new AsistenciaDAO(ds);
+            AsistenciaRepository asistenciaRepository = new AsistenciaRepository(ds);
             int idAsistencia = 1; // Cambia este ID según tus datos
-            Asistencia asistencia = asistenciaDAO.findById(idAsistencia);
+            Asistencia asistencia = asistenciaRepository.findById(idAsistencia);
             if (asistencia != null) {
                 System.out.println("Prueba de impresión de una asistencia por ID: " + idAsistencia);
                 System.out.println(asistencia);

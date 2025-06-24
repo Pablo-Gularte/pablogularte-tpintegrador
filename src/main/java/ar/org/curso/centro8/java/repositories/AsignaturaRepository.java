@@ -10,10 +10,13 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.stereotype.Repository;
+
 import ar.org.curso.centro8.java.entities.Asignatura;
 import ar.org.curso.centro8.java.repositories.interfaces.I_AsignaturaRepository;
 
-public class AsignaturaDAO implements I_AsignaturaRepository {
+@Repository
+public class AsignaturaRepository implements I_AsignaturaRepository {
     private final DataSource dataSource;
 
     // Constantes que definen las consultas SQL que utilizan los métodos para interactuar con la BD
@@ -24,7 +27,7 @@ public class AsignaturaDAO implements I_AsignaturaRepository {
     private static final String SQL_DELETE = "DELETE FROM asignaturas WHERE id_asignatura = ?";
     private static final String SQL_FIND_BY_DOCENTE = "SELECT * FROM asignaturas WHERE docente = ?";
     
-    public AsignaturaDAO(DataSource dataSource) {
+    public AsignaturaRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
