@@ -5,6 +5,14 @@ import java.util.Properties;
 
 import com.zaxxer.hikari.HikariConfig;
 
+/**
+ * Esta clase de utiliza para concentrar la lógica de conexión a la base de
+ * datos utilizando HikariCP. Carga las propiedades de conexión desde el archivo
+ * "application.properties" y devuelve una instancia de HikariConfig configurada
+ * con los parámetros de conexión por medio de un mpétodo estático.
+ * Este método facilita el acceso a la configuración de la base de datos
+ * para las clases de prueba de los repositorios.
+ */
 public class ConfiguracionBD {
     private static Properties prop = new Properties();
     private static HikariConfig config = new HikariConfig();
