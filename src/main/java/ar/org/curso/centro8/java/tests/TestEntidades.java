@@ -1,9 +1,9 @@
 package ar.org.curso.centro8.java.tests;
 
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import ar.org.curso.centro8.java.entities.Asignatura;
 import ar.org.curso.centro8.java.entities.Asistencia;
 import ar.org.curso.centro8.java.entities.Estudiante;
 import ar.org.curso.centro8.java.entities.Grado;
@@ -59,11 +59,33 @@ public class TestEntidades {
 
             System.out.println("Listado de asistencias de " + estudiante.getNombre() + " " + estudiante.getApellido());
             System.out.println("Meses de marzo y abril de " + anio);
+            int presentes = 0;
+            int ausentes = 0;
+            int tardes = 0;
             System.out.println("Fecha\t\t\tEstado");
             AsistenciaRepository asistenciaRepository = new AsistenciaRepository(ds);
             for (Asistencia asistencia : asistenciaRepository.findByEstudiante(idestudiante)) {
-                System.out.println(asistencia.getFecha() + "\t" + asistencia.getTipoAsistencia());
+                if (asistencia.getFecha().toString().startsWith("2024-03") || asistencia.getFecha().toString().startsWith("2024-04")) {
+                    System.out.println(asistencia.getFecha() + "\t" + asistencia.getTipoAsistencia());
+                    switch (asistencia.getTipoAsistencia()) {
+                        case PRESENTE:
+                            presentes++;
+                            break;
+                        case AUSENTE:
+                            ausentes++;
+                            break;
+                        case LLEGADA_TARDE:
+                            tardes++;
+                            break;
+                    }
+                }
             }
+            System.out.println();
+            System.out.println("Resumen de asistencias durante marzo y abril:");
+            System.out.println("Presentes: " + presentes);
+            System.out.println("Ausentes: " + ausentes);
+            System.out.println("Llegadas tarde: " + tardes);
+            System.out.println();
             
         } catch (Exception e) {
             System.out.println("No se pudo conectar a la base de datos: " + e.getMessage());
