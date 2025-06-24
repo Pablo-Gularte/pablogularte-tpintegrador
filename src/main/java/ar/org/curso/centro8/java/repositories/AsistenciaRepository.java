@@ -25,6 +25,7 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
     private static final String SQL_FIND_ALL = "SELECT * FROM asistencias";
     private static final String SQL_UPDATE = "UPDATE asistencias SET fecha=?, id_estudiante=?, tipo_asistencia=? WHERE id_asistencia = ?";
     private static final String SQL_DELETE = "DELETE FROM asistencias WHERE id_asistencia = ?";
+    private static final String SQL_FIND_BY_ESTUDIANTE = "SELECT * FROM asistencias WHERE id_estudiante = ?";
 
     public AsistenciaRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -97,6 +98,20 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
             
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas;
+        }
+    }
+
+    @Override
+    public List<Asistencia> findByEstudiante(int idEstudiante) throws SQLException {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_FIND_BY_ESTUDIANTE)) {
+            ps.setInt(1, idEstudiante);
+            ResultSet rs = ps.executeQuery();
+            List<Asistencia> asistencias = new ArrayList<>();
+            while (rs.next()) {
+                asistencias.add(mapRow(rs));
+            }
+            return asistencias;
         }
     }
 

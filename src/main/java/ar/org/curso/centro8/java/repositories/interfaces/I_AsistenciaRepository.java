@@ -11,4 +11,5 @@ public interface I_AsistenciaRepository {
     List<Asistencia> findAll() throws SQLException;
     int update(Asistencia asistencia) throws SQLException;
     int delete(int id) throws SQLException;
+    List<Asistencia> findByEstudiante(int idEstudiante) throws SQLException;
 }
