@@ -1,5 +1,7 @@
 package ar.org.curso.centro8.java.tests;
 
+import java.sql.SQLException;
+import java.util.List;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -9,6 +11,7 @@ import ar.org.curso.centro8.java.entities.Estudiante;
 import ar.org.curso.centro8.java.entities.Grado;
 import ar.org.curso.centro8.java.entities.Nota;
 import ar.org.curso.centro8.java.enums.Bimestre;
+import ar.org.curso.centro8.java.enums.TipoAsistencia;
 import ar.org.curso.centro8.java.repositories.AsignaturaRepository;
 import ar.org.curso.centro8.java.repositories.AsistenciaRepository;
 import ar.org.curso.centro8.java.repositories.EstudianteRepository;
@@ -21,72 +24,87 @@ public class TestEntidades {
         HikariConfig config = ConfiguracionBD.getConfiguracion();
 
         try (HikariDataSource ds = new HikariDataSource(config)) {
-            // -------------------
-            // INICIAN LAS PRUEBAS
-            // -------------------
-            EstudianteRepository estudianteRepository = new EstudianteRepository(ds);
-            GradoRepository gradoRepository = new GradoRepository(ds);
-            String nombreGrado = "Cuarto";
-            Grado grado = gradoRepository.findByNombreGrado(nombreGrado);
-            
-            System.out.println("***********************");
-            System.out.println("[ INICIAN LAS PRUEBAS ]");
-            System.out.println("***********************");
-            System.out.println("Grado: " + grado.getNombreGrado() + " (docente a cargo: " + grado.getDocente() + ")");
-            System.out.println();
-            
-            System.out.println("Listado de estudiantes del grado");
-            for (Estudiante est : estudianteRepository.findByGrado(grado.getIdGrado())) {
-                System.out.println("--> " + est.getNombre() + " " + est.getApellido() + " (id: " + est.getIdEstudiante() + ")");
-            }
-            System.out.println();
-            
-            int idestudiante = 159;
-            Estudiante estudiante = estudianteRepository.findById(idestudiante);
-            int anio = 2024;
+            // Defino los valores de las variables para las pruebas
+            String nombreGrado = "Quinto";
+            int anio = 2025;
             Bimestre bimestre = Bimestre.PRIMERO;
-            System.out.println("Notas correspondientes a " + estudiante.getNombre() + " " + estudiante.getApellido());
-            System.out.println("Año : " + anio);
-            System.out.println("Bimestre: " + bimestre);
-            NotaRepository notaRepository = new NotaRepository(ds);
-            AsignaturaRepository asignaturaRepository = new AsignaturaRepository(ds);
-            for (Nota nota : notaRepository.findByEstudiante(idestudiante)) {
-                if (nota.getAnio() == anio && nota.getBimestre() == bimestre) {
-                    System.out.println("--> " + asignaturaRepository.findById(nota.getIdAsignatura()).getNombreAsignatura() + ": " + nota.getNota());
-                }
-            }
+            String periodoAsistencia = "2025-03";
+            GradoRepository gradoRepository = new GradoRepository(ds);
+            EstudianteRepository estudianteRepository = new EstudianteRepository(ds);
+
+            // Muestro cartel de inicio de pruebas en pantalla
+            System.out.println(" *********************");
+            System.out.println("[ INICIAN LAS PRUEBAS ]");
+            System.out.println(" *********************");
             System.out.println();
 
-            System.out.println("Listado de asistencias de " + estudiante.getNombre() + " " + estudiante.getApellido());
-            System.out.println("Meses de marzo y abril de " + anio);
-            int presentes = 0;
-            int ausentes = 0;
-            int tardes = 0;
-            System.out.println("Fecha\t\t\tEstado");
-            AsistenciaRepository asistenciaRepository = new AsistenciaRepository(ds);
-            for (Asistencia asistencia : asistenciaRepository.findByEstudiante(idestudiante)) {
-                if (asistencia.getFecha().toString().startsWith("2024-03") || asistencia.getFecha().toString().startsWith("2024-04")) {
-                    System.out.println(asistencia.getFecha() + "\t" + asistencia.getTipoAsistencia());
-                    switch (asistencia.getTipoAsistencia()) {
-                        case PRESENTE:
-                            presentes++;
-                            break;
-                        case AUSENTE:
-                            ausentes++;
-                            break;
-                        case LLEGADA_TARDE:
-                            tardes++;
-                            break;
-                    }
+            // Muestro los datos del grado indicado.
+            Grado grado = gradoRepository.findByNombreGrado(nombreGrado);
+            List<Estudiante> estudiantes = estudianteRepository.findByGrado(grado.getIdGrado());
+            System.out.println("[ Datos del grado " + grado.getNombreGrado() + " ]");
+            System.out.println("Docente a cargo: " + grado.getDocente());
+            System.out.println("Total de estudiantes en el grado: " + estudiantes.size() + "\n");
+
+
+            // Muestro las notas de los estudiantes del grado indicado.
+            System.out.println("[ Notas de los estudiantes del grado para el año " + anio + " y bimestre " + bimestre + " ]");
+            NotaRepository notaRepository = new NotaRepository(ds);
+            AsignaturaRepository asignaturaRepository = new AsignaturaRepository(ds);
+            estudiantes.forEach(estudiante -> {
+                System.out.println("=> " + estudiante.getNombre() + " " + estudiante.getApellido());
+                try {
+                    List<Nota> notas = notaRepository.findByEstudiante(estudiante.getIdEstudiante());
+                    notas.stream()
+                        .filter(n -> n.getAnio() == anio && n.getBimestre() == bimestre)
+                        .forEach(n -> {
+                            try {
+                                String nombreAsignatura = asignaturaRepository.findById(n.getIdAsignatura()).getNombreAsignatura();
+                                int nota = n.getNota();
+                                System.out.println("   -> " + nombreAsignatura + ", Nota: " + nota);
+                            } catch (Exception SQLException) {
+                                System.out.println("Error al obtener el nombre de la asignatura para la nota: " + n.getIdAsignatura());
+                            }
+                        });
+                } catch (SQLException e) {
+                    System.out.println("Error al obtener las notas del estudiante: " + estudiante.getNombre() + " " + estudiante.getApellido() + " - " + e.getMessage());
                 }
-            }
+            });
             System.out.println();
-            System.out.println("Resumen de asistencias durante marzo y abril:");
-            System.out.println("Presentes: " + presentes);
-            System.out.println("Ausentes: " + ausentes);
-            System.out.println("Llegadas tarde: " + tardes);
+
+            // Muestro las asistencias de los estudiantes para el año y período indicados.
+            System.out.println("[ Asistencias de los estudiantes del grado para el período " + periodoAsistencia + " ]");
+            AsistenciaRepository asistenciaRepository = new AsistenciaRepository(ds);
+            estudiantes.stream()
+                .forEach(estudiante -> {
+                    System.out.println("=> " + estudiante.getNombre() + " " + estudiante.getApellido());
+                    try {
+                        List<Asistencia> asistencias = asistenciaRepository.findByEstudiante(estudiante.getIdEstudiante());
+                        int presentes = 0;
+                        int ausentes = 0;
+                        int tardes = 0;
+                        for (Asistencia a : asistencias) {
+                            if (a.getFecha().toString().startsWith(periodoAsistencia)) {
+                                if (a.getTipoAsistencia() == TipoAsistencia.PRESENTE) presentes++;
+                                if (a.getTipoAsistencia() == TipoAsistencia.AUSENTE) ausentes++;
+                                if (a.getTipoAsistencia() == TipoAsistencia.LLEGADA_TARDE) tardes++;
+                                System.out.println("   -> " + a.getFecha() + ": " + a.getTipoAsistencia());
+                            }
+                        }
+                        System.out.println("Total de presnetes: " + presentes);
+                        System.out.println("Total de ausentes: " + ausentes);
+                        System.out.println("Total de llegadas tarde: " + tardes);
+                        System.out.println();
+                    } catch (SQLException e) {
+                        System.out.println("Error al recuperar las asistencias del estudiante de id: " + estudiante.getIdEstudiante() + " " + e.getMessage());
+                    }
+                });
+
+            // Muestor cartel de finalización de pruebas en pantalla
             System.out.println();
-            
+            System.out.println(" *********************");
+            System.out.println("[ FINALIZAN LAS PRUEBAS ]");
+            System.out.println(" *********************");
+
         } catch (Exception e) {
             System.out.println("No se pudo conectar a la base de datos: " + e.getMessage());
         }
