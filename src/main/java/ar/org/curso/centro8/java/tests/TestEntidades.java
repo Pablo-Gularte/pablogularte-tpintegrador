@@ -26,9 +26,9 @@ public class TestEntidades {
         try (HikariDataSource ds = new HikariDataSource(config)) {
             // Defino los valores de las variables para las pruebas
             String nombreGrado = "Quinto";
-            int anio = 2025;
-            Bimestre bimestre = Bimestre.PRIMERO;
-            String periodoAsistencia = "2025-03";
+            int anio = 2024;
+            Bimestre bimestre = Bimestre.TERCERO;
+            String periodoAsistencia = "2024-10";
             GradoRepository gradoRepository = new GradoRepository(ds);
             EstudianteRepository estudianteRepository = new EstudianteRepository(ds);
 
@@ -93,7 +93,7 @@ public class TestEntidades {
                                 System.out.println("   -> " + a.getFecha() + ": " + a.getTipoAsistencia());
                             }
                         }
-                        System.out.println("Total de presnetes: " + presentes);
+                        System.out.println("Total de presentes: " + presentes);
                         System.out.println("Total de ausentes: " + ausentes);
                         System.out.println("Total de llegadas tarde: " + tardes);
                         System.out.println();
