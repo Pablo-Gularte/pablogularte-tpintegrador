@@ -50,7 +50,9 @@ public class TestEntidades {
             System.out.println("[ Notas de los estudiantes del grado para el año " + anio + " y bimestre " + bimestre + " ]");
             NotaRepository notaRepository = new NotaRepository(ds);
             AsignaturaRepository asignaturaRepository = new AsignaturaRepository(ds);
-            estudiantes.forEach(estudiante -> {
+            estudiantes
+                .stream()
+                .forEach(estudiante -> {
                 System.out.println("=> " + estudiante.getNombre() + " " + estudiante.getApellido());
                 try {
                     List<Nota> notas = notaRepository.findByEstudiante(estudiante.getIdEstudiante());
@@ -65,6 +67,7 @@ public class TestEntidades {
                                 System.out.println("Error al obtener el nombre de la asignatura para la nota: " + n.getIdAsignatura());
                             }
                         });
+                        System.out.println();
                 } catch (SQLException e) {
                     System.out.println("Error al obtener las notas del estudiante: " + estudiante.getNombre() + " " + estudiante.getApellido() + " - " + e.getMessage());
                 }
@@ -98,6 +101,7 @@ public class TestEntidades {
                         System.out.println("Error al recuperar las asistencias del estudiante de id: " + estudiante.getIdEstudiante() + " " + e.getMessage());
                     }
                 });
+            System.out.println();
 
             // Muestor cartel de finalización de pruebas en pantalla
             System.out.println();
