@@ -25,7 +25,7 @@ public class TestEntidades {
 
         try (HikariDataSource ds = new HikariDataSource(config)) {
             // Defino los valores de las variables para las pruebas
-            String nombreGrado = "Quinto";
+            String nombreGrado = "Tercero";
             int anio = 2024;
             Bimestre bimestre = Bimestre.TERCERO;
             String periodoAsistencia = "2024-10";
@@ -77,7 +77,8 @@ public class TestEntidades {
             // Muestro las asistencias de los estudiantes para el año y período indicados.
             System.out.println("[ Asistencias de los estudiantes del grado para el período " + periodoAsistencia + " ]");
             AsistenciaRepository asistenciaRepository = new AsistenciaRepository(ds);
-            estudiantes.stream()
+            estudiantes
+                .stream()
                 .forEach(estudiante -> {
                     System.out.println("=> " + estudiante.getNombre() + " " + estudiante.getApellido());
                     try {
