@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.tests.clasesrepository;
+package ar.org.curso.centro8.java.tests.clasesindividuales;
 
 import java.util.List;
 

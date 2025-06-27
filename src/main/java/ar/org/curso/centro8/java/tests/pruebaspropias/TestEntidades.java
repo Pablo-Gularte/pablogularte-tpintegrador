@@ -1,5 +1,5 @@
 
-package ar.org.curso.centro8.java.tests;
+package ar.org.curso.centro8.java.tests.pruebaspropias;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,6 +18,7 @@ import ar.org.curso.centro8.java.repositories.AsistenciaRepository;
 import ar.org.curso.centro8.java.repositories.EstudianteRepository;
 import ar.org.curso.centro8.java.repositories.GradoRepository;
 import ar.org.curso.centro8.java.repositories.NotaRepository;
+import ar.org.curso.centro8.java.tests.ConfiguracionBD;
 
 public class TestEntidades {
     public static void main(String[] args) {
