@@ -133,7 +133,7 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
         
         Asistencia asistencia = new Asistencia(
             rs.getInt("id_asistencia"),
-            rs.getDate("fecha"),
+            rs.getDate("fecha").toLocalDate(),
             rs.getInt("id_estudiante"),
             tipoAsistencia
         );
