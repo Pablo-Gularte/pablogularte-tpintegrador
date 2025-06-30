@@ -5,10 +5,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import ar.org.curso.centro8.java.entities.Estudiante;
+import ar.org.curso.centro8.java.repositories.AsignaturaRepository;
+import ar.org.curso.centro8.java.repositories.AsistenciaRepository;
 import ar.org.curso.centro8.java.repositories.EstudianteRepository;
 import ar.org.curso.centro8.java.repositories.GradoRepository;
+import ar.org.curso.centro8.java.repositories.NotaRepository;
+import ar.org.curso.centro8.java.repositories.interfaces.I_AsignaturaRepository;
+import ar.org.curso.centro8.java.repositories.interfaces.I_AsistenciaRepository;
 import ar.org.curso.centro8.java.repositories.interfaces.I_EstudianteRepository;
 import ar.org.curso.centro8.java.repositories.interfaces.I_GradoRepository;
+import ar.org.curso.centro8.java.repositories.interfaces.I_NotaRepository;
 
 @SpringBootApplication(scanBasePackages = "ar.org.curso.centro8.java")
 public class TestRepositories {
@@ -17,7 +23,12 @@ public class TestRepositories {
             // Defino los valores de las variables para las pruebas
             I_EstudianteRepository estudianteRepo = context.getBean(EstudianteRepository.class);
             I_GradoRepository gradoRepo = context.getBean(GradoRepository.class);
+            I_NotaRepository notasRepo = context.getBean(NotaRepository.class);
+            I_AsignaturaRepository asignaturaRepo = context.getBean(AsignaturaRepository.class);
+            I_AsistenciaRepository asistenciaRepo = context.getBean(AsistenciaRepository.class);
             String nombreGradoPrueba = "Tercero";
+            int anio = 2024;
+            String bimestre = "Segundo bimestre";
 
             // Muestro cartel de inicio de pruebas en pantalla
             System.out.println();
@@ -27,8 +38,17 @@ public class TestRepositories {
             System.out.println();
 
             // Muestro los datos del grado indicado.
+            System.out.println("[ Datos de grado a en prueba ]");
+            System.out.println("--> Nombre de grado: " + gradoRepo.findByNombreGrado(nombreGradoPrueba).getNombreGrado().getDbValue());
+            System.out.println("--> Docente a cargo: " + gradoRepo.findByNombreGrado(nombreGradoPrueba).getDocente());
+            System.out.println();
 
             // Muestro las notas de los estudiantes del grado indicado.
+            System.out.println("[ Notas de los estudiantes del grado para el año " + anio + " y bimestre " + bimestre + " ]");
+            estudianteRepo.findByGrado(gradoRepo.findByNombreGrado(nombreGradoPrueba).getIdGrado()).forEach(e -> {
+                System.out.println("--> [ " + e.getNombre() + " " + e.getApellido() + " ]");
+            });
+            System.out.println();
 
             // Muestro las asistencias de los estudiantes para el año y período indicados.
 
