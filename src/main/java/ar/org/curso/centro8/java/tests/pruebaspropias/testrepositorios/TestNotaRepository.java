@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.tests.clasesindividuales;
+package ar.org.curso.centro8.java.tests.pruebaspropias.testrepositorios;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import ar.org.curso.centro8.java.entities.Nota;
 import ar.org.curso.centro8.java.repositories.NotaRepository;
-import ar.org.curso.centro8.java.tests.ConfiguracionBD;
+import ar.org.curso.centro8.java.tests.pruebaspropias.ConfiguracionBD;
 
 public class TestNotaRepository {
     public static void main(String[] args) {

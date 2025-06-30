@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.tests.conexionbd;
+package ar.org.curso.centro8.java.tests;
 
 import java.io.InputStream;
 import java.sql.Connection;

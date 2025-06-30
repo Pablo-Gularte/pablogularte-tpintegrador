@@ -1,11 +1,11 @@
-package ar.org.curso.centro8.java.tests.clasesindividuales;
+package ar.org.curso.centro8.java.tests.pruebaspropias.testrepositorios;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import ar.org.curso.centro8.java.entities.Asistencia;
 import ar.org.curso.centro8.java.repositories.AsistenciaRepository;
-import ar.org.curso.centro8.java.tests.ConfiguracionBD;
+import ar.org.curso.centro8.java.tests.pruebaspropias.ConfiguracionBD;
 
 public class TestAsistenciaRepository {
     public static void main(String[] args) {
