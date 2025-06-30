@@ -5,9 +5,11 @@ import ar.org.curso.centro8.java.enums.NombreGrado;
 import ar.org.curso.centro8.java.enums.Turno;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 
 public class Grado {
     private int idGrado;

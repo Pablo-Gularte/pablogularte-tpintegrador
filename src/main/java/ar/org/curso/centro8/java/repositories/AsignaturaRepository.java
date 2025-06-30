@@ -34,10 +34,9 @@ public class AsignaturaRepository implements I_AsignaturaRepository {
     @Override
     public void create(Asignatura asignatura) throws SQLException {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setInt(1, asignatura.getIdAsignatura());
-            ps.setString(2, asignatura.getNombreAsignatura());
-            ps.setString(3, asignatura.getDocente());
+                PreparedStatement ps = conn.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, asignatura.getNombreAsignatura());
+            ps.setString(2, asignatura.getDocente());
 
             ps.executeUpdate();
             
@@ -68,8 +67,8 @@ public class AsignaturaRepository implements I_AsignaturaRepository {
     public List<Asignatura> findAll() throws SQLException {
         List<Asignatura> asignaturas = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_FIND_ALL);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_ALL);
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 asignaturas.add(mapRow(rs));
             }

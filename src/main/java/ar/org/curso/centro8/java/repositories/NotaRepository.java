@@ -40,7 +40,7 @@ public class NotaRepository implements I_NotaRepository {
 
             ps.setInt(1, nota.getNota());
             ps.setInt(2, nota.getAnio());
-            ps.setString(3, convertirValorEnumParaBD(nota.getBimestre())); // Convierto el ENUM "Bimestre" a su cadena correspondiente para guardarlo en la BD
+            ps.setString(3, nota.getBimestre().getDbValue());
             ps.setInt(4, nota.getIdEstudiante());
             ps.setInt(5, nota.getIdAsignatura());
 
@@ -86,7 +86,7 @@ public class NotaRepository implements I_NotaRepository {
                 PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
             ps.setInt(1, nota.getNota());
             ps.setInt(2, nota.getAnio());
-            ps.setString(3, convertirValorEnumParaBD(nota.getBimestre())); // Convierto el ENUM "Bimestre" a cadena para guardarlo en la BD
+            ps.setString(3, nota.getBimestre().getDbValue());
             ps.setInt(4, nota.getIdEstudiante());
             ps.setInt(5, nota.getIdAsignatura());
             ps.setInt(6, nota.getIdNota());
@@ -136,50 +136,9 @@ public class NotaRepository implements I_NotaRepository {
                 rs.getInt("id_nota"),
                 rs.getInt("nota"),
                 rs.getInt("anio"),
-                convertirEnumBimestreDesdeBD(rs.getString("bimestre")), // Convierto la cadena del Bimestre a su ENUM
-                                                            // correspondiente
+                Bimestre.fromDb(rs.getString("bimestre")),
                 rs.getInt("id_estudiante"),
                 rs.getInt("id_asignatura"));
         return nota;
-    }
-
-    /**
-     * Convierte el valor del ENUM Bimestre a su representación en cadena
-     * para almacenarlo en la base de datos.
-     * 
-     * @param bimestre Este es el valor del ENUM Bimestre que se va a convertir
-     *                 a su representación en cadena.
-     * @return El valor del ENUM Bimestre convertido a su representación en cadena
-     *         para ser almacenado en la base de datos. Si el valor no es reconocido,
-     *         retorna null.
-     */
-    private String convertirValorEnumParaBD(Bimestre bimestre) {
-        return switch(bimestre) {
-            case PRIMERO -> "Primer bimestre";
-            case SEGUNDO -> "Segundo bimestre";
-            case TERCERO -> "Tercer bimestre";
-            case CUARTO -> "Cuarto bimestre";
-            default -> null;
-        };
-    }
-
-    /**
-     * Convierte el valor del ENUM Bimestre a su representación en cadena
-     * para almacenarlo en la base de datos.
-     * 
-     * @param valorEnum Este es el valor del ENUM Bimestre que se va a convertir
-     *                  a su representación en cadena.
-     * @return El valor del ENUM Bimestre convertido a su representación en cadena
-     *         para ser almacenado en la base de datos. Si el valor no es reconocido,
-     *         retorna null.
-     */
-    private Bimestre convertirEnumBimestreDesdeBD(String valorEnum) {
-        return switch(valorEnum) {
-            case "Primer bimestre" -> Bimestre.PRIMERO;
-            case "Segundo bimestre" -> Bimestre.SEGUNDO;
-            case "Tercer bimestre" -> Bimestre.TERCERO;
-            case "Cuarto bimestre" -> Bimestre.CUARTO;
-            default -> null;
-        };
     }
 }

@@ -38,12 +38,9 @@ public class GradoRepository implements I_GradoRepository {
     public void create(Grado grado) throws SQLException {
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SQL_CREATE, java.sql.Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, convertirValorEnumHaciaBD(grado.getNombreGrado())); // Convierto el ENUM "NombreGrado" a
-                                                                                // cadena para guardarlo en la BD
-            ps.setString(2, convertirValorEnumHaciaBD(grado.getCiclo())); // Convierto el ENUM "Ciclo" a cadena para
-                                                                          // guardarlo en la BD
-            ps.setString(3, convertirValorEnumHaciaBD(grado.getTurno())); // Convierto el ENUM "Turno" a cadena para
-                                                                          // guardarlo en la BD
+            ps.setString(1, grado.getNombreGrado().getDbValue());
+            ps.setString(2, grado.getCiclo().getDbValue());
+            ps.setString(3, grado.getTurno().getDbValue());
             ps.setString(4, grado.getDocente());
             ps.setBoolean(5, grado.isActivo());
 
@@ -51,7 +48,7 @@ public class GradoRepository implements I_GradoRepository {
 
             try (var keys = ps.getGeneratedKeys()) {
                 if (keys.next()) {
-                    grado.setIdGrado(keys.getInt(1)); // Asigna el ID generado al objeto grado
+                    grado.setIdGrado(keys.getInt(1));
                 }
             }
 
@@ -91,12 +88,9 @@ public class GradoRepository implements I_GradoRepository {
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
 
-            ps.setString(1, convertirValorEnumHaciaBD(grado.getNombreGrado())); // Convierto el ENUM "NombreGrado" a
-                                                                                // cadena para guardarlo en la BD
-            ps.setString(2, convertirValorEnumHaciaBD(grado.getCiclo())); // Convierto el ENUM "Ciclo" a cadena para
-                                                                          // guardarlo en la BD
-            ps.setString(3, convertirValorEnumHaciaBD(grado.getTurno())); // Convierto el ENUM "Turno" a cadena para
-                                                                          // guardarlo en la BD
+            ps.setString(1, grado.getNombreGrado().getDbValue());
+            ps.setString(2, grado.getCiclo().getDbValue());
+            ps.setString(3, grado.getTurno().getDbValue());
             ps.setString(4, grado.getDocente());
             ps.setBoolean(5, grado.isActivo());
             ps.setInt(6, grado.getIdGrado());
@@ -145,135 +139,14 @@ public class GradoRepository implements I_GradoRepository {
      * @throws SQLException Si ocurre un error al acceder a los datos del ResultSet.
      */
     private Grado mapRow(ResultSet rs) throws SQLException {
-        // Vuelco uno a uno los datos del ResulSet en variables individuales para poder
-        // realizar las conversiones necesarias
-        // de los ENUMs y luego crear un objeto Grado con esos datos.
-        int idGrado = rs.getInt("id_grado");
-        String docente = rs.getString("docente");
-        boolean activo = rs.getBoolean("activo");
-
-        // Convierto el String de BD del campo "nombre_grado" a su ENUM NombreGrado
-        // correspondiente
-        NombreGrado nombreGrado = convertirEnumNombreGradoDesdeBD(rs.getString("nombre_grado"));
-
-        // Convierto el String de BD del campo "ciclo" a su ENUM Ciclo correspondiente
-        Ciclo ciclo = convertirEnumCicloDesdeBD(rs.getString("ciclo"));
-
-        // Convierto el String de BD del campo "turno" a su ENUM Turno correspondiente
-        Turno turno = convertirEnumTurnoDesdeBD(rs.getString("turno"));
-
-        Grado grado = new Grado(idGrado, nombreGrado, ciclo, turno, docente, activo);
+        Grado grado = new Grado(
+            rs.getInt("id_grado"), 
+            NombreGrado.fromDb(rs.getString("nombre_grado")),
+            Ciclo.fromDb(rs.getString("ciclo")), 
+            Turno.fromDb(rs.getString("turno")), 
+            rs.getString("docente"), 
+            rs.getBoolean("activo")
+        );
         return grado;
-    }
-
-    /**
-     * Convierte un valor del ENUM NombreGrado a su representación en la base de datos.
-     * @param nombreGrado Es el valor del ENUM NombreGrado que se desea convertir.
-     *                    Puede ser PRIMERO, SEGUNDO, TERCERO, CUARTO, QUINTO,
-     *                    SEXTO o SEPTIMO.
-     * @return Una cadena que representa el valor del ENUM NombreGrado en la base de datos.
-     *         Retorna null si el valor del ENUM no es reconocido.
-     */
-    private String convertirValorEnumHaciaBD(NombreGrado nombreGrado) {
-        return switch (nombreGrado) {
-            case PRIMERO -> "Primero";
-            case SEGUNDO -> "Segundo";
-            case TERCERO -> "Tercero";
-            case CUARTO -> "Cuarto";
-            case QUINTO -> "Quinto";
-            case SEXTO -> "Sexto";
-            case SEPTIMO -> "Séptimo";
-            default -> null;
-        };
-    }
-
-    /**
-     * Convierte un valor del ENUM Ciclo a su representación en la base de datos.
-     * 
-     * @param ciclo Es el valor del ENUM Ciclo que se desea convertir.
-     *              Puede ser PRIMERO o SEGUNDO.
-     * @return Una cadena que representa el valor del ENUM Ciclo en la base de datos.
-     *         Retorna null si el valor del ENUM no es reconocido.
-     */
-    private String convertirValorEnumHaciaBD(Ciclo ciclo) {
-        return switch (ciclo) {
-            case PRIMERO -> "Primer ciclo";
-            case SEGUNDO -> "Segundo ciclo";
-            default -> null;
-        };
-    }
-
-    /**
-     * Convierte un valor del ENUM Turno a su representación en la base de datos.
-     * 
-     * @param turno Es el valor del ENUM Turno que se desea convertir.
-     *              Puede ser MAÑANA, TARDE o JORNADA_COMPLETA.
-     * @return Una cadena que representa el valor del ENUM Turno en la base de datos.
-     *         Retorna null si el valor del ENUM no es reconocido.
-     */
-    private String convertirValorEnumHaciaBD(Turno turno) {
-        return switch (turno) {
-            case MAÑANA -> "Mañana";
-            case TARDE -> "Tarde";
-            case JORNADA_COMPLETA -> "Jornada completa";
-            default -> null;
-        };
-    }
-
-    /**
-     * Convierte un valor de cadena de la base de datos a su correspondiente ENUM NombreGrado.
-     * 
-     * @param valorEnum Es la cadena que representa el valor del ENUM NombreGrado
-     *                  en la base de datos. Puede ser "Primero", "Segundo", "Tercero",
-     *                  "Cuarto", "Quinto", "Sexto" o "Séptimo".
-     *                  Si el valor no es reconocido, se retornará null.
-     * @return El valor del ENUM NombreGrado correspondiente a la cadena
-     *         proporcionada. Retorna null si la cadena no es reconocida.
-     */
-    private NombreGrado convertirEnumNombreGradoDesdeBD(String valorEnum) {
-        return switch (valorEnum) {
-            case "Primero" -> NombreGrado.PRIMERO;
-            case "Segundo" -> NombreGrado.SEGUNDO;
-            case "Tercero" -> NombreGrado.TERCERO;
-            case "Cuarto" -> NombreGrado.CUARTO;
-            case "Quinto" -> NombreGrado.QUINTO;
-            case "Sexto" -> NombreGrado.SEXTO;
-            case "Séptimo" -> NombreGrado.SEPTIMO;
-            default -> null;
-        };
-    }
-
-    /**
-     * Convierte un valor de cadena de la base de datos a su correspondiente ENUM Ciclo.
-     * 
-     * @param valorEnum Es la cadena que representa el valor del ENUM Ciclo
-     *                  en la base de datos. Puede ser "Primer ciclo" o "Segundo ciclo
-     * @return El valor del ENUM Ciclo correspondiente a la cadena
-     *         proporcionada. Retorna null si la cadena no es reconocida.
-     */
-    private Ciclo convertirEnumCicloDesdeBD(String valorEnum) {
-        return switch (valorEnum) {
-            case "Primer ciclo" -> Ciclo.PRIMERO;
-            case "Segundo ciclo" -> Ciclo.SEGUNDO;
-            default -> null;
-        };
-    }
-
-    /**
-     * Convierte un valor de cadena de la base de datos a su correspondiente ENUM Turno.
-     * 
-     * @param valorEnum Es la cadena que representa el valor del ENUM Turno
-     *                  en la base de datos. Puede ser "Mañana", "Tarde" o "Jornada completa".
-     *                  Si el valor no es reconocido, se retornará null.
-     * @return El valor del ENUM Turno correspondiente a la cadena
-     *         proporcionada. Retorna null si la cadena no es reconocida.
-     */
-    private Turno convertirEnumTurnoDesdeBD(String valorEnum) {
-        return switch (valorEnum) {
-            case "Mañana" -> Turno.MAÑANA;
-            case "Tarde" -> Turno.TARDE;
-            case "Jornada completa" -> Turno.JORNADA_COMPLETA;
-            default -> null;
-        };
     }
 }

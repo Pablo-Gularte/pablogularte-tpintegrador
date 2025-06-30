@@ -33,11 +33,11 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
 
     @Override
     public void create(Asistencia asistencia) throws SQLException {
-        try (var conn = dataSource.getConnection();
-             var ps = conn.prepareStatement(SQL_CREATE, java.sql.Statement.RETURN_GENERATED_KEYS)) {
-            ps.setDate(1, java.sql.Date.valueOf(asistencia.getFecha().toString())); // Convierto el formato de fecha Date de Java al formato de fecha SQL
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_CREATE, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+            ps.setDate(1, java.sql.Date.valueOf(asistencia.getFecha())); // Convierto el formato de fecha Date de Java al formato de fecha SQL
             ps.setInt(2, asistencia.getIdEstudiante());
-            ps.setString(3, convertirValorEnumParaBD(asistencia.getTipoAsistencia())); // Convierto el ENUM "TipoAsistencia" a su cadena correspondiente para guardarlo en la BD
+            ps.setString(3, asistencia.getTipoAsistencia().getDbValue());
 
             ps.executeUpdate();
 
@@ -67,8 +67,8 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
     public List<Asistencia> findAll() throws SQLException {
         List<Asistencia> asistencias = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_FIND_ALL)) {
-            ResultSet rs = ps.executeQuery();
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_ALL);
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 asistencias.add(mapRow(rs));
             }
@@ -80,9 +80,9 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
     public int update(Asistencia asistencia) throws SQLException {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
-            ps.setDate(1, java.sql.Date.valueOf(asistencia.getFecha().toString())); // Convierto el formato de fecha Date de Java al formato de fecha SQL
+            ps.setDate(1, java.sql.Date.valueOf(asistencia.getFecha()));
             ps.setInt(2, asistencia.getIdEstudiante());
-            ps.setString(3, convertirValorEnumParaBD(asistencia.getTipoAsistencia())); // Convierto el ENUM "TipoAsistencia" a su cadena correspondiente para guardarlo en la BD
+            ps.setString(3, asistencia.getTipoAsistencia().getDbValue());
             ps.setInt(4, asistencia.getIdAsistencia());
 
             int filasAfectadas = ps.executeUpdate();
@@ -129,50 +129,12 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
      */
     private Asistencia mapRow(ResultSet rs) throws SQLException {
         // Convierto el String de la BD al ENUM TipoAsistencia correspondiente
-        TipoAsistencia tipoAsistencia = convertirEnumTipoAsistenciaDesdeBD(rs.getString("tipo_asistencia"));
-        
         Asistencia asistencia = new Asistencia(
             rs.getInt("id_asistencia"),
             rs.getDate("fecha").toLocalDate(),
             rs.getInt("id_estudiante"),
-            tipoAsistencia
+            TipoAsistencia.fromDb(rs.getString("tipo_asistencia"))
         );
         return asistencia;
-    }
-
-    /**
-     * Convierte el valor del ENUM TipoAsistencia a su representación de cadena en la base de datos.
-     * 
-     * @param tipoAsistencia Es el valor del ENUM TipoAsistencia que se desea convertir.
-     *                       Puede ser PRESENTE, AUSENTE o LLEGADA_TARDE.
-     * @return Una cadena que representa el valor del ENUM TipoAsistencia en la base de datos.
-     *         Retorna null si el valor del ENUM no es reconocido.
-     */
-    private String convertirValorEnumParaBD(TipoAsistencia tipoAsistencia) {
-        return switch (tipoAsistencia) {
-            case PRESENTE -> "Presente";
-            case AUSENTE -> "Ausente";
-            case LLEGADA_TARDE -> "Llegada tarde";
-            default -> null;
-        };
-    }
-
-    /**
-     * Convierte el valor recuperado de la BD que representa el ENUM TipoAsistencia
-     * y lo convierte al ENUM correspondiente.
-     * 
-     * @param valorEnum Es la cadena que representa el valor del ENUM TipoAsistencia
-     *                  en la base de datos. Puede ser "Presente", "Ausente",
-     *                  o "Llegada tarde".
-     * @return El valor del ENUM TipoAsistencia correspondiente a la cadena
-     *         proporcionada. Retorna null si la cadena no es reconocida.
-     */
-    private TipoAsistencia convertirEnumTipoAsistenciaDesdeBD(String valorEnum) {
-        return switch (valorEnum) {
-            case "Presente" -> TipoAsistencia.PRESENTE;
-            case "Ausente" -> TipoAsistencia.AUSENTE;
-            case "Llegada tarde" -> TipoAsistencia.LLEGADA_TARDE;
-            default -> null; // Manejo de caso no esperado
-        };
     }
 }

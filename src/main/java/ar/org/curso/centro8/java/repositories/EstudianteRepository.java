@@ -76,8 +76,8 @@ public class EstudianteRepository implements I_EstudianteRepository {
     public List<Estudiante> findAll() throws SQLException {
         List<Estudiante> estudiantes = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(SQL_FIND_ALL)) {
-            ResultSet rs = ps.executeQuery();
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_ALL);
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 estudiantes.add(mapRow(rs));
             }
