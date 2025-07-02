@@ -11,5 +11,5 @@ public interface I_GradoRepository {
     List<Grado> findAll() throws SQLException;
     int update(Grado grado) throws SQLException;
     int delete(int id) throws SQLException;
-    Grado findByNombreGrado(String nombre) throws SQLException;
+    Grado findByNombreYTurno(String nombre, String turno) throws SQLException;
 }

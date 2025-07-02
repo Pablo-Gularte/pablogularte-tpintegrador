@@ -28,7 +28,7 @@ public class GradoRepository implements I_GradoRepository {
     private static final String SQL_FIND_ALL = "SELECT * FROM grados";
     private static final String SQL_UPDATE = "UPDATE grados SET nombre_grado=?, ciclo=?, turno=?, docente=?, activo=? WHERE id_grado = ?";
     private static final String SQL_DELETE = "DELETE FROM grados WHERE id_grado = ?";
-    private static final String SQL_FIND_BY_NOMBRE_GRADO = "SELECT * FROM grados WHERE nombre_grado = ?";
+    private static final String SQL_FIND_BY_NOMBRE_GRADO = "SELECT * FROM grados WHERE nombre_grado = ? AND turno = ?";
 
     public GradoRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -111,10 +111,11 @@ public class GradoRepository implements I_GradoRepository {
     }
 
     @Override
-    public Grado findByNombreGrado(String nombre) throws SQLException {
+    public Grado findByNombreYTurno(String nombre, String turno) throws SQLException {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQL_FIND_BY_NOMBRE_GRADO)) {
             ps.setString(1, nombre);
+            ps.setString(2, turno);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return mapRow(rs);

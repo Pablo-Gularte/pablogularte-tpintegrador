@@ -24,8 +24,9 @@ public class TestGradoRepository {
             }
 
             String nombreGrado = "Sexto";
+            String turnoGradoPrueba = "Mañana";
             System.out.println("Prueba de impresión de un grado por nombre: " + nombreGrado);
-            Grado gradoPorNombre = gradoRepository.findByNombreGrado(nombreGrado);
+            Grado gradoPorNombre = gradoRepository.findByNombreYTurno(nombreGrado, turnoGradoPrueba);
             if (gradoPorNombre != null) {
                 System.out.println(gradoPorNombre);
             } else {

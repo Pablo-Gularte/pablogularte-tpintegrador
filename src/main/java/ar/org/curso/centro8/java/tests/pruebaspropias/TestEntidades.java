@@ -27,6 +27,7 @@ public class TestEntidades {
         try (HikariDataSource ds = new HikariDataSource(config)) {
             // Defino los valores de las variables para las pruebas
             String nombreGrado = "Tercero";
+            String turnoGrado = "Mañana";
             int anio = 2024;
             Bimestre bimestre = Bimestre.TERCERO;
             String periodoAsistencia = "2024-10";
@@ -40,7 +41,7 @@ public class TestEntidades {
             System.out.println();
 
             // Muestro los datos del grado indicado.
-            Grado grado = gradoRepository.findByNombreGrado(nombreGrado);
+            Grado grado = gradoRepository.findByNombreYTurno(nombreGrado, turnoGrado);
             List<Estudiante> estudiantes = estudianteRepository.findByGrado(grado.getIdGrado());
             System.out.println("[ Datos del grado " + grado.getNombreGrado() + " ]");
             System.out.println("Docente a cargo: " + grado.getDocente());
