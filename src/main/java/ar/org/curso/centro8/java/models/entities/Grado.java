@@ -1,8 +1,8 @@
-package ar.org.curso.centro8.java.entities;
+package ar.org.curso.centro8.java.models.entities;
 
-import ar.org.curso.centro8.java.enums.Ciclo;
-import ar.org.curso.centro8.java.enums.NombreGrado;
-import ar.org.curso.centro8.java.enums.Turno;
+import ar.org.curso.centro8.java.models.enums.Ciclo;
+import ar.org.curso.centro8.java.models.enums.NombreGrado;
+import ar.org.curso.centro8.java.models.enums.Turno;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

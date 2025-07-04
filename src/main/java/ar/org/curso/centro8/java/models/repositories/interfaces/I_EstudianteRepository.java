@@ -1,9 +1,9 @@
-package ar.org.curso.centro8.java.repositories.interfaces;
+package ar.org.curso.centro8.java.models.repositories.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import ar.org.curso.centro8.java.entities.Estudiante;
+import ar.org.curso.centro8.java.models.entities.Estudiante;
 
 public interface I_EstudianteRepository {
     void create(Estudiante estudiante) throws SQLException;

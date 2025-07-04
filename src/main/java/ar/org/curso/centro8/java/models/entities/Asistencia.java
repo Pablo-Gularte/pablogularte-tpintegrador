@@ -1,9 +1,9 @@
-package ar.org.curso.centro8.java.entities;
+package ar.org.curso.centro8.java.models.entities;
 
 
 import java.time.LocalDate;
 
-import ar.org.curso.centro8.java.enums.TipoAsistencia;
+import ar.org.curso.centro8.java.models.enums.TipoAsistencia;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +17,6 @@ public class Asistencia {
     private LocalDate fecha;
     private int idEstudiante;
     private TipoAsistencia tipoAsistencia;
+    private String nombreEstudiante;
+    private String apellidoEstudiante;
 }

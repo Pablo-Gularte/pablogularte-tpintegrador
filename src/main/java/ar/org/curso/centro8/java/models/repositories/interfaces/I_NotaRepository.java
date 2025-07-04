@@ -1,9 +1,9 @@
-package ar.org.curso.centro8.java.repositories.interfaces;
+package ar.org.curso.centro8.java.models.repositories.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import ar.org.curso.centro8.java.entities.Nota;
+import ar.org.curso.centro8.java.models.entities.Nota;
 
 public interface I_NotaRepository {
     void create(Nota nota) throws SQLException;

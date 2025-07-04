@@ -8,19 +8,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import ar.org.curso.centro8.java.entities.Asistencia;
-import ar.org.curso.centro8.java.entities.Estudiante;
-import ar.org.curso.centro8.java.entities.Nota;
-import ar.org.curso.centro8.java.repositories.AsignaturaRepository;
-import ar.org.curso.centro8.java.repositories.AsistenciaRepository;
-import ar.org.curso.centro8.java.repositories.EstudianteRepository;
-import ar.org.curso.centro8.java.repositories.GradoRepository;
-import ar.org.curso.centro8.java.repositories.NotaRepository;
-import ar.org.curso.centro8.java.repositories.interfaces.I_AsignaturaRepository;
-import ar.org.curso.centro8.java.repositories.interfaces.I_AsistenciaRepository;
-import ar.org.curso.centro8.java.repositories.interfaces.I_EstudianteRepository;
-import ar.org.curso.centro8.java.repositories.interfaces.I_GradoRepository;
-import ar.org.curso.centro8.java.repositories.interfaces.I_NotaRepository;
+import ar.org.curso.centro8.java.models.entities.Asistencia;
+import ar.org.curso.centro8.java.models.entities.Estudiante;
+import ar.org.curso.centro8.java.models.entities.Nota;
+import ar.org.curso.centro8.java.models.repositories.AsignaturaRepository;
+import ar.org.curso.centro8.java.models.repositories.AsistenciaRepository;
+import ar.org.curso.centro8.java.models.repositories.EstudianteRepository;
+import ar.org.curso.centro8.java.models.repositories.GradoRepository;
+import ar.org.curso.centro8.java.models.repositories.NotaRepository;
+import ar.org.curso.centro8.java.models.repositories.interfaces.I_AsignaturaRepository;
+import ar.org.curso.centro8.java.models.repositories.interfaces.I_AsistenciaRepository;
+import ar.org.curso.centro8.java.models.repositories.interfaces.I_EstudianteRepository;
+import ar.org.curso.centro8.java.models.repositories.interfaces.I_GradoRepository;
+import ar.org.curso.centro8.java.models.repositories.interfaces.I_NotaRepository;
 
 @SpringBootApplication(scanBasePackages = "ar.org.curso.centro8.java")
 public class TestRepositories {
@@ -57,9 +57,8 @@ public class TestRepositories {
             // Muestor cartel de finalización de pruebas en pantalla
             mostrarCartelFinal();
         } catch (Exception e) {
-            System.out.println("ESTE MENSAJE es la primera línea que imprime el CATCH");
-            System.out.println(
-                    "ERROR GENERAL detectado durante la prueba de los repositorios con Spring Boot: " + e.getMessage());
+            System.out.println("*** ERROR GENERAL detectado durante la prueba de los repositorios con Spring Boot ***");
+            e.printStackTrace();
         }
     }
 
@@ -129,7 +128,10 @@ public class TestRepositories {
                     "Nombre de la madre de estudiante nuevo",
                     "Nombre del padre de estudiante nuevo",
                     false,
-                    true);
+                    true,
+                    gradoRepo.findByNombreYTurno(grado, turno).getNombreGrado().getDbValue(),
+                    gradoRepo.findByNombreYTurno(grado, turno).getTurno().getDbValue()
+                    );
 
             System.out.println("[ CREO nuevo estudiante ]");
             estudianteRepo.create(nuevoEstudiante);

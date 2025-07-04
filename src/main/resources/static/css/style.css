@@ -1,0 +1,135 @@
+/* src/main/resources/static/css/style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px; /*es el espacio exterior que rodea un elemento, separándolo de otros elementos.*/
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* container suele ser una clase usada para envolver contenido y centrarlo o darle un ancho máximo. 
+Es muy común en Bootstrap. */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /*hace que las bordes de una tabla se unan en lugar de mostrarse separados.*/
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tr:nth-child(even) { /*Selecciona las filas pares (2, 4, 6...) de una tabla para aplicarles estilos.*/
+    background-color: #f2f2f2;
+}
+
+.button {
+    display: inline-block; /*Hace que un elemento se comporte como inline pero acepte ancho, alto, margen y padding como un block.*/
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    cursor: pointer; /*Cambia el cursor a una mano al pasar sobre el elemento, indicando que es clickeable.*/
+}
+
+.button:hover { /*Aplica estilos al elemento con clase .button cuando el mouse pasa por encima.*/
+    background-color: #0056b3;
+}
+
+.button.edit { /*Selecciona el elemento que tiene ambas clases: button y edit.*/
+    background-color: #28a745;
+}
+
+.button.edit:hover { /*Aplica estilos al elemento con clases button y edit cuando el mouse pasa por encima.*/
+    background-color: #218838;
+}
+
+.button.delete { /*Selecciona el elemento que tiene las clases button y delete al mismo tiempo.*/
+    background-color: #dc3545;
+}
+
+.button.delete:hover { /*Aplica estilos al elemento con clases button y delete cuando el mouse pasa por encima.*/
+    background-color: #c82333;
+}
+
+.button.back { /*Selecciona el elemento que tiene las clases button y back al mismo tiempo.*/
+    background-color: #6c757d;
+}
+
+.button.back:hover { /*Aplica estilos al elemento con clases button y back cuando el mouse pasa por encima.*/
+    background-color: #5a6268;
+}
+
+form div { /*Selecciona todos los div que están dentro de un form, sin importar cuán profundo estén.*/
+    margin-bottom: 15px;
+}
+
+form label { /*Selecciona todos los label que están dentro de un form.*/
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="number"],
+form select { /*Selecciona los campos input de tipo texto, número y los select que estén dentro de un form, 
+    para aplicarles estilos.*/
+    width: calc(100% - 22px); /* Ajuste para padding y border */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Incluir padding y border en el ancho */
+    margin-bottom: 5px;
+}
+
+form input[type="checkbox"] { /*Selecciona los input de tipo checkbox que estén dentro de un form.*/
+    margin-top: 10px;
+}
+
+form button[type="submit"] { /*Selecciona el button de tipo submit que esté dentro de un form.*/
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button[type="submit"]:hover { /*Aplica estilos al botón de tipo submit dentro de un form cuando el mouse pasa por encima.*/
+    background-color: #0056b3;
+}
+
+.error-message { /*Selecciona cualquier elemento con la clase error-message.*/
+    color: red;
+    background-color: #ffebe8;
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}

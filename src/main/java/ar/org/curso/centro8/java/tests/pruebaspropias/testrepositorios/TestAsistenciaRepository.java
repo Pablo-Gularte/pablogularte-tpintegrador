@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import ar.org.curso.centro8.java.entities.Asistencia;
-import ar.org.curso.centro8.java.enums.TipoAsistencia;
-import ar.org.curso.centro8.java.repositories.AsistenciaRepository;
+import ar.org.curso.centro8.java.models.entities.Asistencia;
+import ar.org.curso.centro8.java.models.entities.Estudiante;
+import ar.org.curso.centro8.java.models.enums.TipoAsistencia;
+import ar.org.curso.centro8.java.models.repositories.AsistenciaRepository;
+import ar.org.curso.centro8.java.models.repositories.EstudianteRepository;
 import ar.org.curso.centro8.java.tests.pruebaspropias.ConfiguracionBD;
 
 public class TestAsistenciaRepository {
@@ -15,8 +17,13 @@ public class TestAsistenciaRepository {
         HikariConfig config = ConfiguracionBD.getConfiguracion();
         try (HikariDataSource ds = new HikariDataSource(config)) {
             AsistenciaRepository asistenciaRepository = new AsistenciaRepository(ds);
-            int idAsistencia = 1; // Cambia este ID según tus datos
+            EstudianteRepository estudianteRepository = new EstudianteRepository(ds);
+            int idAsistencia = 1;
+            int idEstudiante = 10;
+
             Asistencia asistencia = asistenciaRepository.findById(idAsistencia);
+            Estudiante estudiante = estudianteRepository.findById(idEstudiante);
+
             if (asistencia != null) {
                 System.out.println("Prueba de impresión de una asistencia por ID: " + idAsistencia);
                 System.out.println(asistencia);
@@ -25,7 +32,14 @@ public class TestAsistenciaRepository {
             }
             
             // Creo un registro de asistencia
-            Asistencia nuevaAsistencia = new Asistencia(0, LocalDate.now(), 1, TipoAsistencia.PRESENTE);
+            Asistencia nuevaAsistencia = new Asistencia(
+                0, 
+                LocalDate.now(), 
+                1, 
+                TipoAsistencia.PRESENTE, 
+                estudiante.getNombre(), 
+                estudiante.getApellido()
+            );
             asistenciaRepository.create(nuevaAsistencia);
             if (nuevaAsistencia.getIdAsistencia() > 0) {
                 System.out.println("## SE CREO un nuevo registor de asistencia de ID: " + nuevaAsistencia.getIdAsistencia());

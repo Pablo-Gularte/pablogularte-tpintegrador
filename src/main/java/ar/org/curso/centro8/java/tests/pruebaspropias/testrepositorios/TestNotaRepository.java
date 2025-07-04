@@ -5,8 +5,8 @@ import java.util.List;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import ar.org.curso.centro8.java.entities.Nota;
-import ar.org.curso.centro8.java.repositories.NotaRepository;
+import ar.org.curso.centro8.java.models.entities.Nota;
+import ar.org.curso.centro8.java.models.repositories.NotaRepository;
 import ar.org.curso.centro8.java.tests.pruebaspropias.ConfiguracionBD;
 
 public class TestNotaRepository {

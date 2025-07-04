@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.repositories;
+package ar.org.curso.centro8.java.models.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,11 +11,11 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
-import ar.org.curso.centro8.java.entities.Grado;
-import ar.org.curso.centro8.java.enums.Ciclo;
-import ar.org.curso.centro8.java.enums.NombreGrado;
-import ar.org.curso.centro8.java.enums.Turno;
-import ar.org.curso.centro8.java.repositories.interfaces.I_GradoRepository;
+import ar.org.curso.centro8.java.models.entities.Grado;
+import ar.org.curso.centro8.java.models.enums.Ciclo;
+import ar.org.curso.centro8.java.models.enums.NombreGrado;
+import ar.org.curso.centro8.java.models.enums.Turno;
+import ar.org.curso.centro8.java.models.repositories.interfaces.I_GradoRepository;
 
 @Repository
 public class GradoRepository implements I_GradoRepository {
@@ -24,11 +24,13 @@ public class GradoRepository implements I_GradoRepository {
     // Constantes que definen las consultas SQL que utilizan os métodos para
     // interactuar con la BD
     private static final String SQL_CREATE = "INSERT INTO grados (nombre_grado, ciclo, turno, docente, activo) VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM grados WHERE id_grado = ?";
-    private static final String SQL_FIND_ALL = "SELECT * FROM grados";
     private static final String SQL_UPDATE = "UPDATE grados SET nombre_grado=?, ciclo=?, turno=?, docente=?, activo=? WHERE id_grado = ?";
     private static final String SQL_DELETE = "DELETE FROM grados WHERE id_grado = ?";
-    private static final String SQL_FIND_BY_NOMBRE_GRADO = "SELECT * FROM grados WHERE nombre_grado = ? AND turno = ?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM grados";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM grados WHERE id_grado = ?";
+    private static final String SQL_FIND_TURNO_GRADO = "SELECT * FROM grados WHERE turno = ?";
+    private static final String SQL_FIND_NOMBRE_GRADO = "SELECT * FROM grados WHERE nombre_grado = ?";
+    private static final String SQL_FIND_BY_NOMBRE_Y_TURNO = "SELECT * FROM grados WHERE nombre_grado = ? AND turno = ?";
 
     public GradoRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -52,34 +54,6 @@ public class GradoRepository implements I_GradoRepository {
                 }
             }
 
-        }
-    }
-
-    @Override
-    public Grado findById(int id) throws SQLException {
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement ps = conn.prepareStatement(SQL_FIND_BY_ID)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapRow(rs);
-                } else {
-                    return null; // No se encontró el grado con el ID especificado
-                }
-            }
-        }
-    }
-
-    @Override
-    public List<Grado> findAll() throws SQLException {
-        List<Grado> grados = new ArrayList<>();
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement ps = conn.prepareStatement(SQL_FIND_ALL);
-                ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                grados.add(mapRow(rs));
-            }
-            return grados;
         }
     }
 
@@ -111,9 +85,54 @@ public class GradoRepository implements I_GradoRepository {
     }
 
     @Override
+    public Grado findById(int id) throws SQLException {
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_BY_ID)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapRow(rs);
+                } else {
+                    return null; // No se encontró el grado con el ID especificado
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<Grado> findByNombre(String nombre) throws SQLException {
+        List<Grado> grados = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_NOMBRE_GRADO)) {
+            ps.setString(1, nombre);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    grados.add(mapRow(rs));
+                }
+                return grados;
+            }
+        }
+    }
+
+    @Override
+    public List<Grado> findByTurno(String turno) throws SQLException {
+        List<Grado> grados = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_TURNO_GRADO)) {
+            ps.setString(1, turno);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    grados.add(mapRow(rs));
+                }
+                return grados;
+            }
+        }
+    }
+
+    @Override
     public Grado findByNombreYTurno(String nombre, String turno) throws SQLException {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL_FIND_BY_NOMBRE_GRADO)) {
+             PreparedStatement ps = conn.prepareStatement(SQL_FIND_BY_NOMBRE_Y_TURNO)) {
             ps.setString(1, nombre);
             ps.setString(2, turno);
             try (ResultSet rs = ps.executeQuery()) {
@@ -124,6 +143,19 @@ public class GradoRepository implements I_GradoRepository {
                 }
             }
             
+        }
+    }
+    
+    @Override
+    public List<Grado> findAll() throws SQLException {
+        List<Grado> grados = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SQL_FIND_ALL);
+                ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                grados.add(mapRow(rs));
+            }
+            return grados;
         }
     }
 

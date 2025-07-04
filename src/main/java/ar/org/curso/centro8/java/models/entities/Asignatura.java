@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.entities;
+package ar.org.curso.centro8.java.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

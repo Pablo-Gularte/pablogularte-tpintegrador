@@ -7,17 +7,17 @@ import java.util.List;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import ar.org.curso.centro8.java.entities.Asistencia;
-import ar.org.curso.centro8.java.entities.Estudiante;
-import ar.org.curso.centro8.java.entities.Grado;
-import ar.org.curso.centro8.java.entities.Nota;
-import ar.org.curso.centro8.java.enums.Bimestre;
-import ar.org.curso.centro8.java.enums.TipoAsistencia;
-import ar.org.curso.centro8.java.repositories.AsignaturaRepository;
-import ar.org.curso.centro8.java.repositories.AsistenciaRepository;
-import ar.org.curso.centro8.java.repositories.EstudianteRepository;
-import ar.org.curso.centro8.java.repositories.GradoRepository;
-import ar.org.curso.centro8.java.repositories.NotaRepository;
+import ar.org.curso.centro8.java.models.entities.Asistencia;
+import ar.org.curso.centro8.java.models.entities.Estudiante;
+import ar.org.curso.centro8.java.models.entities.Grado;
+import ar.org.curso.centro8.java.models.entities.Nota;
+import ar.org.curso.centro8.java.models.enums.Bimestre;
+import ar.org.curso.centro8.java.models.enums.TipoAsistencia;
+import ar.org.curso.centro8.java.models.repositories.AsignaturaRepository;
+import ar.org.curso.centro8.java.models.repositories.AsistenciaRepository;
+import ar.org.curso.centro8.java.models.repositories.EstudianteRepository;
+import ar.org.curso.centro8.java.models.repositories.GradoRepository;
+import ar.org.curso.centro8.java.models.repositories.NotaRepository;
 
 public class TestEntidades {
     public static void main(String[] args) {
@@ -120,7 +120,10 @@ public class TestEntidades {
                 "Nombre de la madre de estudiante nuevo", 
                 "Nombre del padre de estudiante nuevo", 
                 false, 
-                true);
+                true,
+                grado.getNombreGrado().getDbValue(),
+                grado.getTurno().getDbValue()
+            );
 
             estudianteRepository.create(nuevoEstudiante);
             System.out.println("--> Creo al estudiante de ID: " + nuevoEstudiante.getIdEstudiante());

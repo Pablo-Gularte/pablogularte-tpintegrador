@@ -3,8 +3,8 @@ package ar.org.curso.centro8.java.tests.pruebaspropias.testrepositorios;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import ar.org.curso.centro8.java.entities.Asignatura;
-import ar.org.curso.centro8.java.repositories.AsignaturaRepository;
+import ar.org.curso.centro8.java.models.entities.Asignatura;
+import ar.org.curso.centro8.java.models.repositories.AsignaturaRepository;
 import ar.org.curso.centro8.java.tests.pruebaspropias.ConfiguracionBD;
 
 public class TestAsignaturaRepository {

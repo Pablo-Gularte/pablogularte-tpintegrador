@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.entities;
+package ar.org.curso.centro8.java.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,4 +19,6 @@ public class Estudiante {
     private String nombrePadre;
     private boolean hermanoEnEscuela;
     private boolean activo;
+    private String nombreGrado;
+    private String turnoGrado;
 }

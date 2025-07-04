@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.repositories;
+package ar.org.curso.centro8.java.models.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,8 +12,8 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
-import ar.org.curso.centro8.java.entities.Estudiante;
-import ar.org.curso.centro8.java.repositories.interfaces.I_EstudianteRepository;
+import ar.org.curso.centro8.java.models.entities.Estudiante;
+import ar.org.curso.centro8.java.models.repositories.interfaces.I_EstudianteRepository;
 
 @Repository
 public class EstudianteRepository implements I_EstudianteRepository {
@@ -22,11 +22,11 @@ public class EstudianteRepository implements I_EstudianteRepository {
 
     // Constantes que definen las consultas SQL que utilizan os métodos para interactuar con la BD
     private static final String SQL_CREATE = "INSERT INTO estudiantes (nombre, apellido, edad, id_grado, direccion, nombre_madre, nombre_padre, hermano_en_escuela, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM estudiantes WHERE id_estudiante = ?";
-    private static final String SQL_FIND_ALL = "SELECT * FROM estudiantes";
     private static final String SQL_UPDATE = "UPDATE estudiantes SET nombre = ?, apellido = ?, edad = ?, id_grado = ?, direccion = ?, nombre_madre = ?, nombre_padre = ?, hermano_en_escuela = ?, activo = ? WHERE id_estudiante = ?";
     private static final String SQL_DELETE = "DELETE FROM estudiantes WHERE id_estudiante = ?";
-    private static final String SQL_FIND_BY_GRADO = "SELECT * FROM estudiantes WHERE id_grado = ?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM estudiantes_grados_vw";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM estudiantes_grados_vw WHERE id_estudiante = ?";
+    private static final String SQL_FIND_BY_GRADO = "SELECT * FROM estudiantes_grados_vw WHERE id_grado = ?";
 
     public EstudianteRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -142,7 +142,9 @@ public class EstudianteRepository implements I_EstudianteRepository {
             rs.getString("nombre_madre"),
             rs.getString("nombre_padre"),
             rs.getBoolean("hermano_en_escuela"),
-            rs.getBoolean("activo")
+            rs.getBoolean("activo"),
+            rs.getString("nombre_grado"),
+            rs.getString("turno_grado")
         );
 
         return estudiante;

@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.repositories;
+package ar.org.curso.centro8.java.models.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,9 +11,9 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
-import ar.org.curso.centro8.java.entities.Asistencia;
-import ar.org.curso.centro8.java.enums.TipoAsistencia;
-import ar.org.curso.centro8.java.repositories.interfaces.I_AsistenciaRepository;
+import ar.org.curso.centro8.java.models.entities.Asistencia;
+import ar.org.curso.centro8.java.models.enums.TipoAsistencia;
+import ar.org.curso.centro8.java.models.repositories.interfaces.I_AsistenciaRepository;
 
 @Repository
 public class AsistenciaRepository implements I_AsistenciaRepository {
@@ -21,11 +21,11 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
     
     // Constantes que definen las consultas SQL que utilizan los métodos para interactuar con la BD
     private static final String SQL_CREATE = "INSERT INTO asistencias (fecha, id_estudiante, tipo_asistencia) VALUES (?, ?, ?)";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM asistencias WHERE id_asistencia = ?";
-    private static final String SQL_FIND_ALL = "SELECT * FROM asistencias";
     private static final String SQL_UPDATE = "UPDATE asistencias SET fecha=?, id_estudiante=?, tipo_asistencia=? WHERE id_asistencia = ?";
     private static final String SQL_DELETE = "DELETE FROM asistencias WHERE id_asistencia = ?";
-    private static final String SQL_FIND_BY_ESTUDIANTE = "SELECT * FROM asistencias WHERE id_estudiante = ?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM estudiantes_asistencias_vw";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM estudiantes_asistencias_vw WHERE id_asistencia = ?";
+    private static final String SQL_FIND_BY_ESTUDIANTE = "SELECT * FROM estudiantes_asistencias_vw WHERE id_estudiante = ?";
 
     public AsistenciaRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -133,7 +133,9 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
             rs.getInt("id_asistencia"),
             rs.getDate("fecha").toLocalDate(),
             rs.getInt("id_estudiante"),
-            TipoAsistencia.fromDb(rs.getString("tipo_asistencia"))
+            TipoAsistencia.fromDb(rs.getString("tipo_asistencia")),
+            rs.getString("nombre_estudiante"),
+            rs.getString("apellido_estudiante")
         );
         return asistencia;
     }

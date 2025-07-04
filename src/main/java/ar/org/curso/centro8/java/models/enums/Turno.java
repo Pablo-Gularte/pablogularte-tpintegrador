@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.enums;
+package ar.org.curso.centro8.java.models.enums;
 
 public enum Turno {
     MAÑANA("Mañana"), 

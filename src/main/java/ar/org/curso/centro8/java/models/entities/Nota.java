@@ -1,6 +1,6 @@
-package ar.org.curso.centro8.java.entities;
+package ar.org.curso.centro8.java.models.entities;
 
-import ar.org.curso.centro8.java.enums.Bimestre;
+import ar.org.curso.centro8.java.models.enums.Bimestre;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +16,7 @@ public class Nota {
     private Bimestre bimestre;
     private int idEstudiante;
     private int idAsignatura;
+    private String nombreEstudiante;
+    private String apellidoEstudiante;
+    private String nombrAsignatura;
 }

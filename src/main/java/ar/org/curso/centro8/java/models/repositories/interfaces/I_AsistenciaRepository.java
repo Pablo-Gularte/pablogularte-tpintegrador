@@ -1,9 +1,9 @@
-package ar.org.curso.centro8.java.repositories.interfaces;
+package ar.org.curso.centro8.java.models.repositories.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import ar.org.curso.centro8.java.entities.Asistencia;
+import ar.org.curso.centro8.java.models.entities.Asistencia;
 
 public interface I_AsistenciaRepository {
     void create(Asistencia asistencia) throws SQLException;

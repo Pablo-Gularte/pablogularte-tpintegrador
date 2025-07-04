@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es-AR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de inicio del Trtabajo Práctico Integrador del curso POO CFP8-SMATA</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>Listado de estudiantes</h1>
+        
+        <p><a th:href="@{/grados}" class="button">Ver grados</a></p>
+
+        <form th:action="@{/estudiantes/FiltrarPorGrado}" method="get">
+            <label for="idGrado">Filtrar por grado:</label>
+            <select name="idGrado" id="idGrado">
+                <option value="0">Todos los grados</option>
+                <option th:each="grado : ${grados}"
+                        th:value="${grado.idGrado}"
+                        th:text="${grado.getNombreGrado().getDbValue() + ' (turno ' + grado.getTurno().getDbValue() + ')'}"
+                        th:selected="${selectedGradoId != null && selectedGradoId == grado.idGrado}">
+                </option>
+            </select>
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <p><a href="#" class="button">Crear estudiante</a></p>
+
+        <p th:if="${error}" class="error-message" th:text="${error}"></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Edad</th>
+                    <th>Grado</th>
+                    <th>Turno</th>
+                    <th>Tiene hermanos en la escuela</th>
+                    <th>Es regular</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="estudiante : ${estudiantes}">
+                    <td th:text="${estudiante.idEstudiante}"></td>
+                    <td th:text="${estudiante.nombre}"></td>
+                    <td th:text="${estudiante.apellido}"></td>
+                    <td th:text="${estudiante.edad}"></td>
+                    <td th:text="${estudiante.nombreGrado}"></td>
+                    <td th:text="${estudiante.turnoGrado}"></td>
+                    <td th:text="${estudiante.hermanoEnEscuela} ? 'Si' : 'No'"></td>
+                    <td th:text="${estudiante.activo} ? 'Si' : 'No'"></td>
+                    <td>
+                        <a th:href="@{/estudiante/editar(id=${estudiante.idEstudiante})}" class="button edit">Editar</a>
+                        <a th:href="@{/estudiante/eliminar(id=${estudiante.idEstudiante})}" class="button delete">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

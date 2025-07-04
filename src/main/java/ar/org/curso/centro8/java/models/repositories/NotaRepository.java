@@ -1,4 +1,4 @@
-package ar.org.curso.centro8.java.repositories;
+package ar.org.curso.centro8.java.models.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,9 +12,9 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Repository;
 
-import ar.org.curso.centro8.java.entities.Nota;
-import ar.org.curso.centro8.java.enums.Bimestre;
-import ar.org.curso.centro8.java.repositories.interfaces.I_NotaRepository;
+import ar.org.curso.centro8.java.models.entities.Nota;
+import ar.org.curso.centro8.java.models.enums.Bimestre;
+import ar.org.curso.centro8.java.models.repositories.interfaces.I_NotaRepository;
 
 @Repository
 public class NotaRepository implements I_NotaRepository {
@@ -23,11 +23,11 @@ public class NotaRepository implements I_NotaRepository {
     // Constantes que definen las consultas SQL que utilizan los métodos para
     // interactuar con la BD
     private static final String SQL_CREATE = "INSERT INTO notas (nota, anio, bimestre, id_estudiante, id_asignatura) VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM notas WHERE id_nota = ?";
-    private static final String SQL_FIND_ALL = "SELECT * FROM notas";
     private static final String SQL_UPDATE = "UPDATE notas SET nota=?, anio=?, bimestre=?, id_estudiante=?, id_asignatura=? WHERE id_nota = ?";
     private static final String SQL_DELETE = "DELETE FROM notas WHERE id_nota = ?";
-    private static final String SQL_FIND_BY_ESTUDIANTE = "SELECT * FROM notas WHERE id_estudiante = ?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM estudiantes_notas_vw";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM estudiantes_notas_vw WHERE id_nota = ?";
+    private static final String SQL_FIND_BY_ESTUDIANTE = "SELECT * FROM estudiantes_notas_vw WHERE id_estudiante = ?";
 
     public NotaRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -138,7 +138,11 @@ public class NotaRepository implements I_NotaRepository {
                 rs.getInt("anio"),
                 Bimestre.fromDb(rs.getString("bimestre")),
                 rs.getInt("id_estudiante"),
-                rs.getInt("id_asignatura"));
+                rs.getInt("id_asignatura"),
+                rs.getString("nombre_estudiante"),
+                rs.getString("apellido_estudiante"),
+                rs.getString("nombre_asignatura")
+                );
         return nota;
     }
 }

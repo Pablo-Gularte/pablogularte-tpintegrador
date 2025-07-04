@@ -1,14 +1,13 @@
-package ar.org.curso.centro8.java.enums;
+package ar.org.curso.centro8.java.models.enums;
 
-public enum Bimestre {
-    PRIMERO("Primer bimestre"), 
-    SEGUNDO("Segundo bimestre"),
-    TERCERO("Tercer bimestre"), 
-    CUARTO("Cuarto bimestre");
+public enum TipoAsistencia {
+    PRESENTE("Presente"),
+    AUSENTE("Ausente"),
+    LLEGADA_TARDE("Llegada tarde");
 
     private final String dbValue;
 
-    Bimestre(String dbValue) {
+    TipoAsistencia(String dbValue) {
         this.dbValue = dbValue;
     }
 
@@ -16,8 +15,8 @@ public enum Bimestre {
         return dbValue;
     }
 
-    public static Bimestre fromDb(String dbValue) {
-        for (Bimestre t : values()) {
+    public static TipoAsistencia fromDb(String dbValue) {
+        for (TipoAsistencia t : values()) {
             if (t.dbValue.equals(dbValue)) {
                 return t;
             }

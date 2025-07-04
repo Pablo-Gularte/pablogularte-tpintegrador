@@ -1,0 +1,17 @@
+package ar.org.curso.centro8.java.models.repositories.interfaces;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import ar.org.curso.centro8.java.models.entities.Grado;
+
+public interface I_GradoRepository {
+    void create(Grado grado) throws SQLException;
+    int update(Grado grado) throws SQLException;
+    int delete(int id) throws SQLException;
+    Grado findById(int id) throws SQLException;
+    Grado findByNombreYTurno(String nombre, String turno) throws SQLException;
+    List<Grado> findByNombre(String nombre) throws SQLException;
+    List<Grado> findByTurno(String turno) throws SQLException;
+    List<Grado> findAll() throws SQLException;
+}
