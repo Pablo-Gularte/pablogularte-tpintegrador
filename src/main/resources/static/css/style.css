@@ -44,6 +44,14 @@ tr:nth-child(even) { /*Selecciona las filas pares (2, 4, 6...) de una tabla para
     background-color: #f2f2f2;
 }
 
+tfoot td {
+    text-align: right;
+    font-weight: bold;
+    color: #007bff;
+    background-color: #b6d8f1;
+    padding: 15px 5px;
+}
+
 .button {
     display: inline-block; /*Hace que un elemento se comporte como inline pero acepte ancho, alto, margen y padding como un block.*/
     padding: 10px 15px;

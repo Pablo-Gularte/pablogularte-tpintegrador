@@ -42,6 +42,22 @@ public class EstudianteController {
         return "index";
     }
 
+    @GetMapping("/estudiante/alta")
+    public String crearEstudiante(Model model) {
+        return "estudiante-alta";
+    }
+
+    @GetMapping("/estudiante/modificar")
+    public String modificarEstudiante(Model model) {
+        return "estudiante-modifica";
+    }
+
+    @GetMapping("/estudiante/eliminar")
+    public String eliminarEstudiante(Model model) {
+        return "estudiante-eliminar";
+    }
+
+    // Filtros y búsquedas de datos
     @GetMapping("/estudiantes/FiltrarPorGrado")
     public String filtrarEstudiantesPorGrado(@RequestParam(value = "idGrado", required = false) Integer idGrado, Model model) {
         try {
@@ -57,10 +73,6 @@ public class EstudianteController {
             model.addAttribute("grados", grados);
 
             model.addAttribute("selectedGradoId", idGrado);
-
-            System.out.println("estudiantes: " + estudiantes);
-            System.out.println("grados: " + grados);
-            System.out.println("idGrado: " + idGrado);
 
         } catch (SQLException e) {
             e.printStackTrace();
