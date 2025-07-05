@@ -12,7 +12,7 @@
 	<artifactId>pablogularte-tpintegrador</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>pablogularte-tpintegrador</name>
-	<description>Trabajo práctico integrador del curso &quot;Programación JAVA&quot; del CFP8-SMATA consistente en un desarrollo que integra una interfaz web con conexión a base de datos MySQL</description>
+	<description>Trabajo práctico integrador del curso "Programación JAVA" del CFP8-SMATA consistente en un desarrollo que integra una interfaz web con conexión a base de datos MySQL</description>
 	<url/>
 	<licenses>
 		<license/>

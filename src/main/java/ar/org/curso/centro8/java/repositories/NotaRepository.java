@@ -23,10 +23,10 @@ public class NotaRepository implements I_NotaRepository {
     // Constantes que definen las consultas SQL que utilizan los métodos para
     // interactuar con la BD
     private static final String SQL_CREATE = "INSERT INTO notas (nota, anio, bimestre, id_estudiante, id_asignatura) VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM notas WHERE id_nota = ?";
-    private static final String SQL_FIND_ALL = "SELECT * FROM notas";
     private static final String SQL_UPDATE = "UPDATE notas SET nota=?, anio=?, bimestre=?, id_estudiante=?, id_asignatura=? WHERE id_nota = ?";
     private static final String SQL_DELETE = "DELETE FROM notas WHERE id_nota = ?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM notas";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM notas WHERE id_nota = ?";
     private static final String SQL_FIND_BY_ESTUDIANTE = "SELECT * FROM notas WHERE id_estudiante = ?";
 
     public NotaRepository(DataSource dataSource) {

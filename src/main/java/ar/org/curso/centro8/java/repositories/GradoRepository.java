@@ -24,10 +24,10 @@ public class GradoRepository implements I_GradoRepository {
     // Constantes que definen las consultas SQL que utilizan os métodos para
     // interactuar con la BD
     private static final String SQL_CREATE = "INSERT INTO grados (nombre_grado, ciclo, turno, docente, activo) VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM grados WHERE id_grado = ?";
-    private static final String SQL_FIND_ALL = "SELECT * FROM grados";
     private static final String SQL_UPDATE = "UPDATE grados SET nombre_grado=?, ciclo=?, turno=?, docente=?, activo=? WHERE id_grado = ?";
     private static final String SQL_DELETE = "DELETE FROM grados WHERE id_grado = ?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM grados";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM grados WHERE id_grado = ?";
     private static final String SQL_FIND_BY_NOMBRE_GRADO = "SELECT * FROM grados WHERE nombre_grado = ? AND turno = ?";
 
     public GradoRepository(DataSource dataSource) {

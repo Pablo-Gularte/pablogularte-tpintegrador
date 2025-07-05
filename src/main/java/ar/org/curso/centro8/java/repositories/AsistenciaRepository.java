@@ -21,10 +21,10 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
     
     // Constantes que definen las consultas SQL que utilizan los métodos para interactuar con la BD
     private static final String SQL_CREATE = "INSERT INTO asistencias (fecha, id_estudiante, tipo_asistencia) VALUES (?, ?, ?)";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM asistencias WHERE id_asistencia = ?";
-    private static final String SQL_FIND_ALL = "SELECT * FROM asistencias";
     private static final String SQL_UPDATE = "UPDATE asistencias SET fecha=?, id_estudiante=?, tipo_asistencia=? WHERE id_asistencia = ?";
     private static final String SQL_DELETE = "DELETE FROM asistencias WHERE id_asistencia = ?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM asistencias";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM asistencias WHERE id_asistencia = ?";
     private static final String SQL_FIND_BY_ESTUDIANTE = "SELECT * FROM asistencias WHERE id_estudiante = ?";
 
     public AsistenciaRepository(DataSource dataSource) {
@@ -51,8 +51,8 @@ public class AsistenciaRepository implements I_AsistenciaRepository {
 
     @Override
     public Asistencia findById(int id) throws SQLException {
-        try (var conn = dataSource.getConnection();
-             var ps = conn.prepareStatement(SQL_FIND_BY_ID)) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL_FIND_BY_ID)) {
             ps.setInt(1, id);
             try (var rs = ps.executeQuery()) {
                 if (rs.next()) {

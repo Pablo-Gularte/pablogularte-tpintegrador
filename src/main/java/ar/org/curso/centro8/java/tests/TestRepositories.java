@@ -95,7 +95,6 @@ public class TestRepositories {
         try {
             System.out.println("[ MODIFICO nuevo estudiante ]");
             System.out.println("--> Modifico nombre y apellido de estudiante");
-            System.out.println("----> " + estudianteRepo.findById(estudiante.getIdEstudiante()));
             estudiante.setNombre("Nombre cambiado");
             estudiante.setApellido("Apellido también cambiado");
             estudianteRepo.update(estudiante);
@@ -122,22 +121,20 @@ public class TestRepositories {
             Estudiante nuevoEstudiante = new Estudiante(
                     0,
                     gradoRepo.findByNombreYTurno(grado, turno).getIdGrado(),
-                    "Estudiante",
-                    "Nuevo",
+                    "Ricardo",
+                    "Iorio",
                     6,
-                    "Dirección de estudiante nuevo",
-                    "Nombre de la madre de estudiante nuevo",
-                    "Nombre del padre de estudiante nuevo",
+                    "Dirección de Ricardo Iorio",
+                    "Nombre de la madre de Ricardo Iorio",
+                    "Nombre del padre de Ricardo Iorio",
                     false,
                     true);
 
             System.out.println("[ CREO nuevo estudiante ]");
             estudianteRepo.create(nuevoEstudiante);
             if (nuevoEstudiante.getIdEstudiante() > 0) {
-                System.out.println("--> Creo al estudiante de ID: " + nuevoEstudiante.getIdEstudiante());
-                System.out.println(nuevoEstudiante);
                 System.out.println("--> Recupero de la BD al estudiante de ID: " + nuevoEstudiante.getIdEstudiante() + " de la BD");
-                System.out.println(estudianteRepo.findById(nuevoEstudiante.getIdEstudiante()));
+                System.out.println("----> " + estudianteRepo.findById(nuevoEstudiante.getIdEstudiante()));
             } else {
                 System.out.println("--> No se encontró el nuevo estudiante en la BD.");
             }
@@ -160,7 +157,7 @@ public class TestRepositories {
     private static void mostrarAsistenciasEstudiantes(List<Estudiante> listadoEstudiantes, String periodoAsistencia, ConfigurableApplicationContext contextoApp) {
         I_AsistenciaRepository asistenciaRepo = contextoApp.getBean(AsistenciaRepository.class);
         
-        System.out.println("[ Asistencias de los estudiantes del grado durante el período " + periodoAsistencia + " ]");
+        System.out.println("[ Asistencias de los estudiantes durante el período " + periodoAsistencia + " ]");
         listadoEstudiantes.forEach(estudiante -> {
             List<Asistencia> asistenciasPorEstudiante = new ArrayList<>();
             try {

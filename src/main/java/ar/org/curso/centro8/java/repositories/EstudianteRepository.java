@@ -22,10 +22,10 @@ public class EstudianteRepository implements I_EstudianteRepository {
 
     // Constantes que definen las consultas SQL que utilizan os métodos para interactuar con la BD
     private static final String SQL_CREATE = "INSERT INTO estudiantes (nombre, apellido, edad, id_grado, direccion, nombre_madre, nombre_padre, hermano_en_escuela, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM estudiantes WHERE id_estudiante = ?";
-    private static final String SQL_FIND_ALL = "SELECT * FROM estudiantes";
     private static final String SQL_UPDATE = "UPDATE estudiantes SET nombre = ?, apellido = ?, edad = ?, id_grado = ?, direccion = ?, nombre_madre = ?, nombre_padre = ?, hermano_en_escuela = ?, activo = ? WHERE id_estudiante = ?";
     private static final String SQL_DELETE = "DELETE FROM estudiantes WHERE id_estudiante = ?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM estudiantes";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM estudiantes WHERE id_estudiante = ?";
     private static final String SQL_FIND_BY_GRADO = "SELECT * FROM estudiantes WHERE id_grado = ?";
 
     public EstudianteRepository(DataSource dataSource) {

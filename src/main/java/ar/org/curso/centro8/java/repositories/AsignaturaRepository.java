@@ -21,10 +21,10 @@ public class AsignaturaRepository implements I_AsignaturaRepository {
 
     // Constantes que definen las consultas SQL que utilizan los métodos para interactuar con la BD
     private static final String SQL_CREATE = "INSERT INTO asignaturas (nombre_asignatura, docente) VALUES (?, ?)";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM asignaturas WHERE id_asignatura = ?";
-    private static final String SQL_FIND_ALL = "SELECT * FROM asignaturas";
     private static final String SQL_UPDATE = "UPDATE asignaturas SET nombre_asignatura=?, docente=? WHERE id_asignatura = ?";
     private static final String SQL_DELETE = "DELETE FROM asignaturas WHERE id_asignatura = ?";
+    private static final String SQL_FIND_ALL = "SELECT * FROM asignaturas";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM asignaturas WHERE id_asignatura = ?";
     private static final String SQL_FIND_BY_DOCENTE = "SELECT * FROM asignaturas WHERE docente = ?";
     
     public AsignaturaRepository(DataSource dataSource) {
